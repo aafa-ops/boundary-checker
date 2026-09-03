@@ -5,10 +5,16 @@ const SPLIT_COLOUR = "#e8590c";
 const state = {
   districtsFC: null,        // GeoJSON FeatureCollection of districts (also used for point-in-polygon)
   unitLayerGroup: null,     // current Leaflet layer for postcodes/suburbs/lgas
+  unitLayerKind: "none",    // which kind is currently shown
+  unitLayerIndex: {},       // id -> leaflet layer, for the currently shown unit layer (click-to-locate)
   unitCache: {},            // cache of loaded+converted unit GeoJSON by type
   lookup: {},               // postcodes/suburbs/lgas lookup JSON, loaded on demand
   crosswalk: null,
+  boundaryWeight: 2.5,
+  partyOpacity: 0.55,
 };
+
+const LABEL_ZOOM = { postcodes: 10, suburbs: 12, lgas: 8 };
 
 const map = L.map("map", { zoomControl: true }).setView([-36.9, 144.4], 7);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -60,16 +66,27 @@ async function loadDistricts() {
   state.districtsFC = fc;
   const layer = L.geoJSON(fc, {
     style: (f) => ({
-      color: "#555",
-      weight: 1,
+      color: "#444",
+      weight: state.boundaryWeight,
       fillColor: f.properties.party_colour,
-      fillOpacity: 0.55,
+      fillOpacity: state.partyOpacity,
     }),
     onEachFeature: (f, l) => l.bindPopup(districtPopupHTML(f.properties)),
   });
   state.districtsLayer = layer;
   layer.addTo(map);
   buildPartyLegend(fc);
+}
+
+function applyBoundaryWeight(weight) {
+  state.boundaryWeight = weight;
+  if (state.districtsLayer) state.districtsLayer.setStyle({ weight });
+  if (state.unitLayerGroup) state.unitLayerGroup.setStyle({ weight: weight + 0.5 });
+}
+
+function applyPartyOpacity(opacity) {
+  state.partyOpacity = opacity;
+  if (state.districtsLayer) state.districtsLayer.setStyle({ fillOpacity: opacity });
 }
 
 function buildPartyLegend(fc) {
@@ -98,6 +115,8 @@ async function setUnitLayer(kind) {
     map.removeLayer(state.unitLayerGroup);
     state.unitLayerGroup = null;
   }
+  state.unitLayerKind = kind;
+  state.unitLayerIndex = {};
   if (kind === "none") return;
 
   const cfg = UNIT_CONFIG[kind];
@@ -108,25 +127,38 @@ async function setUnitLayer(kind) {
   const layer = L.geoJSON(fc, {
     style: (f) => ({
       color: f.properties.is_split ? SPLIT_COLOUR : FULL_COLOUR,
-      weight: 1.5,
+      weight: state.boundaryWeight + 0.5,
       fill: false,
     }),
     onEachFeature: (f, l) => {
       const name = f.properties[cfg.nameProp];
       l.bindPopup(unitPopupHTML(name, cfg.label, f.properties));
+      l.bindTooltip(name, { permanent: true, direction: "center", className: "unit-label" });
+      l.closeTooltip();
+      state.unitLayerIndex[f.properties[cfg.idProp]] = l;
     },
   });
   state.unitLayerGroup = layer;
   layer.addTo(map);
+  updateLabelVisibility();
 }
+
+function updateLabelVisibility() {
+  const kind = state.unitLayerKind;
+  if (!state.unitLayerGroup || kind === "none") return;
+  const shouldShow = map.getZoom() >= LABEL_ZOOM[kind];
+  state.unitLayerGroup.eachLayer((l) => {
+    if (shouldShow) l.openTooltip();
+    else l.closeTooltip();
+  });
+}
+map.on("zoomend", updateLabelVisibility);
 
 document.querySelectorAll('input[name="unit-layer"]').forEach((radio) => {
   radio.addEventListener("change", (e) => setUnitLayer(e.target.value));
 });
-document.getElementById("toggle-districts").addEventListener("change", (e) => {
-  if (e.target.checked) state.districtsLayer.addTo(map);
-  else map.removeLayer(state.districtsLayer);
-});
+document.getElementById("slider-boundary").addEventListener("input", (e) => applyBoundaryWeight(parseFloat(e.target.value)));
+document.getElementById("slider-party").addEventListener("input", (e) => applyPartyOpacity(parseFloat(e.target.value)));
 
 // ---------- Splits table ----------
 const SPLITS_CONFIG = {
@@ -147,22 +179,41 @@ async function renderSplitTable(kind, filterText) {
   const tbody = document.querySelector("#split-table tbody");
   tbody.innerHTML = "";
   const rows = [];
-  for (const key in lookup) {
-    const entry = lookup[key];
+  for (const unitId in lookup) {
+    const entry = lookup[unitId];
     if (!entry.is_split) continue;
     if (filterText && !entry.name.toLowerCase().includes(filterText.toLowerCase())) continue;
     for (const d of entry.districts) {
-      rows.push({ name: entry.name, ...d });
+      rows.push({ unitId, name: entry.name, ...d });
     }
   }
   rows.sort((a, b) => a.name.localeCompare(b.name) || b.pct_area - a.pct_area);
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="5" id="split-table-empty">No matches.</td></tr>`;
+    return;
+  }
   const frag = document.createDocumentFragment();
-  for (const r of rows.slice(0, 500)) {
+  for (const r of rows.slice(0, 1000)) {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${r.name}</td><td>${r.district_label}</td><td>${r.member}</td><td>${r.party}</td><td>${r.pct_area}%</td>`;
+    tr.addEventListener("click", () => locateUnitOnMap(kind, r.unitId));
     frag.appendChild(tr);
   }
   tbody.appendChild(frag);
+}
+
+async function locateUnitOnMap(kind, unitId) {
+  const radio = document.querySelector(`input[name="unit-layer"][value="${kind}"]`);
+  if (radio && !radio.checked) {
+    radio.checked = true;
+    await setUnitLayer(kind);
+  } else if (!state.unitLayerGroup || state.unitLayerKind !== kind) {
+    await setUnitLayer(kind);
+  }
+  const target = state.unitLayerIndex[unitId];
+  if (!target) return;
+  map.fitBounds(target.getBounds(), { maxZoom: Math.max(map.getZoom(), LABEL_ZOOM[kind] + 1) });
+  target.openPopup();
 }
 
 let currentSplitKind = "postcodes";

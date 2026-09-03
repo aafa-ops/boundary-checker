@@ -17,52 +17,66 @@
   </div>
 </header>
 
-<div id="app">
-  <aside id="sidebar">
+<div id="main-col">
+  <div id="top-row">
+    <aside id="sidebar">
 
-    <section class="panel">
-      <h2>Lookup</h2>
-      <label for="postcode-input">Postcode</label>
-      <input id="postcode-input" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 3121">
-      <div id="lookup-result"></div>
-    </section>
+      <section class="panel">
+        <h2>Lookup</h2>
+        <label for="postcode-input">Postcode</label>
+        <input id="postcode-input" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 3121">
+        <div id="lookup-result"></div>
+      </section>
 
-    <section class="panel">
-      <h2>Overlay layer</h2>
-      <div class="radio-row">
-        <label><input type="radio" name="unit-layer" value="none" checked> None</label>
-        <label><input type="radio" name="unit-layer" value="postcodes"> Postcodes</label>
-        <label><input type="radio" name="unit-layer" value="suburbs"> Suburbs</label>
-        <label><input type="radio" name="unit-layer" value="lgas"> LGAs</label>
-      </div>
-      <p class="hint">Districts are always shown, coloured by the party holding the seat. The overlay outlines each unit <span class="legend-dot legend-full"></span>fully within one district or <span class="legend-dot legend-split"></span>split across districts.</p>
-      <label class="checkbox-row"><input type="checkbox" id="toggle-districts" checked> Show districts (party colour)</label>
-    </section>
+      <section class="panel">
+        <h2>Overlay layer</h2>
+        <p class="hint">Districts (the electorates) are always shown, filled with the colour of whichever party currently holds that seat. Pick <b>one</b> extra layer below to outline in <span class="legend-dot legend-full"></span><b>green</b> where it sits fully inside a single district, or <span class="legend-dot legend-split"></span><b>orange</b> where it's split across more than one. Only one at a time keeps the map readable — showing postcodes, suburbs and LGAs together would be an unreadable tangle of overlapping borders.</p>
+        <div class="radio-row">
+          <label><input type="radio" name="unit-layer" value="none" checked> None</label>
+          <label><input type="radio" name="unit-layer" value="postcodes"> Postcodes</label>
+          <label><input type="radio" name="unit-layer" value="suburbs"> Suburbs</label>
+          <label><input type="radio" name="unit-layer" value="lgas"> LGAs</label>
+        </div>
+        <p class="hint">Labels for the chosen layer appear once you zoom in far enough to read them without clutter.</p>
 
-    <section class="panel">
-      <h2>Split list</h2>
-      <div class="radio-row">
-        <label><input type="radio" name="split-type" value="postcodes" checked> Postcodes</label>
-        <label><input type="radio" name="split-type" value="suburbs"> Suburbs</label>
-        <label><input type="radio" name="split-type" value="lgas"> LGAs</label>
-      </div>
+        <div class="slider-row">
+          <label for="slider-boundary">Boundary strength</label>
+          <input id="slider-boundary" type="range" min="1" max="8" step="0.5" value="2.5">
+        </div>
+        <div class="slider-row">
+          <label for="slider-party">Party colour intensity</label>
+          <input id="slider-party" type="range" min="0" max="1" step="0.05" value="0.55">
+        </div>
+      </section>
+
+      <section class="panel" id="legend-panel">
+        <h2>Party colours</h2>
+        <div id="party-legend"></div>
+      </section>
+
+    </aside>
+
+    <main id="map"></main>
+  </div>
+
+  <section id="splits-full">
+    <h2>Split list</h2>
+    <p class="hint">
+      Every row here is a postcode, suburb or LGA that <b>isn't fully inside one electorate</b> — it lists each district it touches, that district's member and party, and what share of its area falls there. <b>Why it matters:</b> a postcode or suburb name alone can be misleading about who represents an area — e.g. before contacting an MP's office on behalf of a resident, or deciding which electorate offices to approach about a suburb, check this list first rather than assuming the "obvious" electorate is the only one involved. Click any row to jump straight to it on the map.
+    </p>
+    <div class="radio-row">
+      <label><input type="radio" name="split-type" value="postcodes" checked> Postcodes</label>
+      <label><input type="radio" name="split-type" value="suburbs"> Suburbs</label>
+      <label><input type="radio" name="split-type" value="lgas"> LGAs</label>
       <input id="split-search" type="text" placeholder="Filter by name...">
-      <div id="split-table-wrap">
-        <table id="split-table">
-          <thead><tr><th>Name</th><th>District</th><th>Member</th><th>Party</th><th>%</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel" id="legend-panel">
-      <h2>Party colours</h2>
-      <div id="party-legend"></div>
-    </section>
-
-  </aside>
-
-  <main id="map"></main>
+    </div>
+    <div id="split-table-wrap">
+      <table id="split-table">
+        <thead><tr><th>Name</th><th>District</th><th>Member</th><th>Party</th><th>% of area</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>

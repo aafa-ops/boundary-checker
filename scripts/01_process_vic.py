@@ -239,18 +239,24 @@ def main():
 
     print("Simplifying + writing TopoJSON for the web map...")
 
-    def write_topojson(gdf: gpd.GeoDataFrame, cols: list[str], out_name: str,
-                        toposimplify: float = 2):
+    def write_topojson(gdf: gpd.GeoDataFrame, cols: list[str], out_name: str):
+        # Geometry is already simplified (in metres, via geopandas .simplify())
+        # before this is called. topojson's own toposimplify defaults to off
+        # (and is NOT metre-scaled) - passing a value here previously flattened
+        # VIC's coastline into ~7-point blobs. prequantize alone still gives
+        # the real win (shared-arc dedup), so leave toposimplify untouched.
         gdf = gdf[cols].copy()
         gdf = gdf[~(gdf.geometry.isna() | gdf.geometry.is_empty)]
         # NaN isn't valid JSON (Python's json module emits a bare `NaN` token,
         # which browsers' JSON.parse rejects) - convert to null on non-geometry cols.
         attr_cols = [c for c in gdf.columns if c != "geometry"]
         gdf[attr_cols] = gdf[attr_cols].astype(object).where(gdf[attr_cols].notna(), None)
-        topo = topojson.Topology(gdf, prequantize=1e6, toposimplify=toposimplify)
+        topo = topojson.Topology(gdf, prequantize=1e6)
         (OUT / out_name).write_text(topo.to_json())
 
-    write_topojson(vic_boundary.to_crs(WEB_CRS), ["geometry"], "vic_boundary.topojson")
+    vic_boundary_web = vic_boundary.copy()
+    vic_boundary_web.geometry = vic_boundary_web.geometry.simplify(100, preserve_topology=True)
+    write_topojson(vic_boundary_web.to_crs(WEB_CRS), ["geometry"], "vic_boundary.topojson")
 
     districts_web = districts.to_crs(WEB_CRS)
     write_topojson(districts_web, [
