@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIC electorate &amp; postcode map — Australian Alliance for Animals</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="branding/brand.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="site-header">
+  <img src="branding/aafa_logo.png" alt="Australian Alliance for Animals" id="logo">
+  <div id="header-text">
+    <h1>Victorian electoral districts vs postcodes, suburbs &amp; LGAs</h1>
+    <p>Demo — internal use only. Boundaries: ABS ASGS 2021/2025, VEC 2022 state election.</p>
+  </div>
+</header>
+
+<div id="app">
+  <aside id="sidebar">
+
+    <section class="panel">
+      <h2>Lookup</h2>
+      <label for="postcode-input">Postcode</label>
+      <input id="postcode-input" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 3121">
+      <div id="lookup-result"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Overlay layer</h2>
+      <div class="radio-row">
+        <label><input type="radio" name="unit-layer" value="none" checked> None</label>
+        <label><input type="radio" name="unit-layer" value="postcodes"> Postcodes</label>
+        <label><input type="radio" name="unit-layer" value="suburbs"> Suburbs</label>
+        <label><input type="radio" name="unit-layer" value="lgas"> LGAs</label>
+      </div>
+      <p class="hint">Districts are always shown, coloured by the party holding the seat. The overlay outlines each unit <span class="legend-dot legend-full"></span>fully within one district or <span class="legend-dot legend-split"></span>split across districts.</p>
+      <label class="checkbox-row"><input type="checkbox" id="toggle-districts" checked> Show districts (party colour)</label>
+    </section>
+
+    <section class="panel">
+      <h2>Split list</h2>
+      <div class="radio-row">
+        <label><input type="radio" name="split-type" value="postcodes" checked> Postcodes</label>
+        <label><input type="radio" name="split-type" value="suburbs"> Suburbs</label>
+        <label><input type="radio" name="split-type" value="lgas"> LGAs</label>
+      </div>
+      <input id="split-search" type="text" placeholder="Filter by name...">
+      <div id="split-table-wrap">
+        <table id="split-table">
+          <thead><tr><th>Name</th><th>District</th><th>Member</th><th>Party</th><th>%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="legend-panel">
+      <h2>Party colours</h2>
+      <div id="party-legend"></div>
+    </section>
+
+  </aside>
+
+  <main id="map"></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

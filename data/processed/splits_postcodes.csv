@@ -1,0 +1,608 @@
+POA_NAME21,district_label,member,party,pct_area
+3002,Melbourne District,"SANDELL, Ellen",Australian Greens,97.79
+3002,Richmond District,"DE VIETRI, Gabrielle",Australian Greens,2.21
+3003,Melbourne District,"SANDELL, Ellen",Australian Greens,97.14
+3003,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,2.62
+3003,Footscray District,"HALL, Katie",Australian Labor Party - Victorian Branch,0.24
+3004,Prahran District,"HIBBINS, Sam",Australian Greens,60.99
+3004,Melbourne District,"SANDELL, Ellen",Australian Greens,24.93
+3004,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,14.09
+3006,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,85.19
+3006,Prahran District,"HIBBINS, Sam",Australian Greens,14.7
+3006,Melbourne District,"SANDELL, Ellen",Australian Greens,0.1
+3008,Melbourne District,"SANDELL, Ellen",Australian Greens,78.89
+3008,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,21.11
+3012,Footscray District,"HALL, Katie",Australian Labor Party - Victorian Branch,49.99
+3012,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,35.91
+3012,Williamstown District,"HORNE, Melissa",Australian Labor Party - Victorian Branch,14.09
+3013,Footscray District,"HALL, Katie",Australian Labor Party - Victorian Branch,68.79
+3013,Williamstown District,"HORNE, Melissa",Australian Labor Party - Victorian Branch,31.2
+3018,Williamstown District,"HORNE, Melissa",Australian Labor Party - Victorian Branch,95.23
+3018,Point Cook District,"HILAKARI, Mathew",Australian Labor Party - Victorian Branch,3.89
+3018,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,0.7
+3020,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,63.62
+3020,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,36.11
+3020,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,0.26
+3021,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,77.12
+3021,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,22.44
+3021,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,0.43
+3022,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,48.99
+3022,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,48.95
+3022,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,2.06
+3023,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,84.06
+3023,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,12.42
+3023,Sydenham District,"HUTCHINS, Natalie",Australian Labor Party - Victorian Branch,3.52
+3024,Werribee District,"PALLAS, Tim",Australian Labor Party - Victorian Branch,53.92
+3024,Tarneit District,"WIGHT, Dylan",Australian Labor Party - Victorian Branch,16.71
+3024,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,15.48
+3024,Melton District,"McGHIE, Steve",Australian Labor Party - Victorian Branch,13.89
+3026,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,81.67
+3026,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,18.27
+3027,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,99.39
+3027,Point Cook District,"HILAKARI, Mathew",Australian Labor Party - Victorian Branch,0.61
+3028,Point Cook District,"HILAKARI, Mathew",Australian Labor Party - Victorian Branch,74.6
+3028,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,23.39
+3028,Williamstown District,"HORNE, Melissa",Australian Labor Party - Victorian Branch,1.66
+3029,Tarneit District,"WIGHT, Dylan",Australian Labor Party - Victorian Branch,44.42
+3029,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,29.99
+3029,Laverton District,"CONNOLLY, Sarah",Australian Labor Party - Victorian Branch,25.51
+3030,Werribee District,"PALLAS, Tim",Australian Labor Party - Victorian Branch,68.45
+3030,Point Cook District,"HILAKARI, Mathew",Australian Labor Party - Victorian Branch,31.37
+3031,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,57.68
+3031,Melbourne District,"SANDELL, Ellen",Australian Greens,42.26
+3032,Footscray District,"HALL, Katie",Australian Labor Party - Victorian Branch,56.29
+3032,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,43.62
+3033,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,98.73
+3033,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,1.27
+3036,Sydenham District,"HUTCHINS, Natalie",Australian Labor Party - Victorian Branch,40.85
+3036,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,37.78
+3036,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,20.5
+3036,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,0.87
+3038,Sydenham District,"HUTCHINS, Natalie",Australian Labor Party - Victorian Branch,43.76
+3038,St Albans District,"SULEYMAN, Natalie",Australian Labor Party - Victorian Branch,35.32
+3038,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,20.91
+3039,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,97.83
+3039,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,2.15
+3040,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,55.51
+3040,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,44.45
+3041,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,97.41
+3041,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,2.28
+3041,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,0.19
+3041,Pascoe Vale District,"CIANFLONE, Anthony",Australian Labor Party - Victorian Branch,0.12
+3043,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,83.49
+3043,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,14.3
+3043,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,1.64
+3043,Greenvale District,"WALTERS, Iwan",Australian Labor Party - Victorian Branch,0.56
+3046,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,97.89
+3046,Niddrie District,"CARROLL, Ben",Australian Labor Party - Victorian Branch,1.66
+3046,Pascoe Vale District,"CIANFLONE, Anthony",Australian Labor Party - Victorian Branch,0.43
+3048,Greenvale District,"WALTERS, Iwan",Australian Labor Party - Victorian Branch,59.81
+3048,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,40.19
+3049,Greenvale District,"WALTERS, Iwan",Australian Labor Party - Victorian Branch,75.6
+3049,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,21.41
+3049,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,2.99
+3055,Brunswick District,"READ, Tim",Australian Greens,66.41
+3055,Pascoe Vale District,"CIANFLONE, Anthony",Australian Labor Party - Victorian Branch,31.84
+3055,Melbourne District,"SANDELL, Ellen",Australian Greens,1.58
+3055,Essendon District,"PEARSON, Danny",Australian Labor Party - Victorian Branch,0.17
+3062,Greenvale District,"WALTERS, Iwan",Australian Labor Party - Victorian Branch,98.56
+3062,Broadmeadows District,"MATTHEWS-WARD, Kathleen",Australian Labor Party - Victorian Branch,1.39
+3063,Kalkallo District,"SPENCE, Ros",Australian Labor Party - Victorian Branch,89.78
+3063,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,10.2
+3064,Kalkallo District,"SPENCE, Ros",Australian Labor Party - Victorian Branch,69.61
+3064,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,21.29
+3064,Greenvale District,"WALTERS, Iwan",Australian Labor Party - Victorian Branch,8.97
+3064,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,0.1
+3068,Brunswick District,"READ, Tim",Australian Greens,58.96
+3068,Richmond District,"DE VIETRI, Gabrielle",Australian Greens,40.96
+3072,Preston District,"LAMBERT, Nathan",Australian Labor Party - Victorian Branch,68.29
+3072,Northcote District,"THEOPHANOUS, Kat",Australian Labor Party - Victorian Branch,31.66
+3076,Thomastown District,"HALFPENNY, Bronwyn",Australian Labor Party - Victorian Branch,73.09
+3076,Mill Park District,"D'AMBROSIO, Lily",Australian Labor Party - Victorian Branch,26.88
+3082,Mill Park District,"D'AMBROSIO, Lily",Australian Labor Party - Victorian Branch,84.11
+3082,Bundoora District,"BROOKS, Colin",Australian Labor Party - Victorian Branch,15.8
+3083,Bundoora District,"BROOKS, Colin",Australian Labor Party - Victorian Branch,98.79
+3083,Preston District,"LAMBERT, Nathan",Australian Labor Party - Victorian Branch,1.16
+3085,Ivanhoe District,"CARBINES, Anthony",Australian Labor Party - Victorian Branch,58.13
+3085,Bundoora District,"BROOKS, Colin",Australian Labor Party - Victorian Branch,41.84
+3088,Bundoora District,"BROOKS, Colin",Australian Labor Party - Victorian Branch,60.8
+3088,Eltham District,"WARD, Vicki",Australian Labor Party - Victorian Branch,39.2
+3097,Eildon District,"McLEISH, Cindy",Liberal,99.05
+3097,Warrandyte District,"SMITH, Ryan",Liberal,0.89
+3106,Bulleen District,"GUY, Matthew",Liberal,91.45
+3106,Warrandyte District,"SMITH, Ryan",Liberal,8.47
+3109,Warrandyte District,"SMITH, Ryan",Liberal,69.72
+3109,Bulleen District,"GUY, Matthew",Liberal,30.28
+3111,Warrandyte District,"SMITH, Ryan",Liberal,94.39
+3111,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,5.61
+3115,Warrandyte District,"SMITH, Ryan",Liberal,99.22
+3115,Croydon District,"HODGETT, David",Liberal,0.65
+3115,Eildon District,"McLEISH, Cindy",Liberal,0.13
+3116,Warrandyte District,"SMITH, Ryan",Liberal,60.04
+3116,Evelyn District,"VALLENCE, Bridget",Liberal,39.92
+3124,Hawthorn District,"PESUTTO, John",Liberal,98.56
+3124,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,1.13
+3124,Kew District,"WILSON, Jess",Liberal,0.31
+3125,Box Hill District,"HAMER, Paul",Australian Labor Party - Victorian Branch,53.13
+3125,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,46.87
+3126,Hawthorn District,"PESUTTO, John",Liberal,58.99
+3126,Kew District,"WILSON, Jess",Liberal,41.01
+3127,Box Hill District,"HAMER, Paul",Australian Labor Party - Victorian Branch,54.26
+3127,Hawthorn District,"PESUTTO, John",Liberal,31.72
+3127,Kew District,"WILSON, Jess",Liberal,14.02
+3130,Box Hill District,"HAMER, Paul",Australian Labor Party - Victorian Branch,68.79
+3130,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,27.51
+3130,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,3.7
+3131,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,64.98
+3131,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,34.96
+3133,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,88.93
+3133,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,11.02
+3134,Warrandyte District,"SMITH, Ryan",Liberal,61.42
+3134,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,36.43
+3134,Croydon District,"HODGETT, David",Liberal,1.95
+3134,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,0.2
+3135,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,99.07
+3135,Croydon District,"HODGETT, David",Liberal,0.9
+3136,Croydon District,"HODGETT, David",Liberal,99.24
+3136,Warrandyte District,"SMITH, Ryan",Liberal,0.57
+3136,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,0.17
+3137,Croydon District,"HODGETT, David",Liberal,77.35
+3137,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,22.62
+3138,Evelyn District,"VALLENCE, Bridget",Liberal,82.93
+3138,Croydon District,"HODGETT, David",Liberal,17.07
+3139,Eildon District,"McLEISH, Cindy",Liberal,72.75
+3139,Evelyn District,"VALLENCE, Bridget",Liberal,17.82
+3139,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,9.42
+3143,Malvern District,"O'BRIEN, Michael",Liberal,96.46
+3143,Prahran District,"HIBBINS, Sam",Australian Greens,2.29
+3143,Caulfield District,"SOUTHWICK, David",Liberal,1.26
+3145,Malvern District,"O'BRIEN, Michael",Liberal,85.32
+3145,Caulfield District,"SOUTHWICK, David",Liberal,14.19
+3145,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,0.43
+3146,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,62.61
+3146,Malvern District,"O'BRIEN, Michael",Liberal,32.83
+3146,Hawthorn District,"PESUTTO, John",Liberal,4.56
+3147,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,99.03
+3147,Malvern District,"O'BRIEN, Michael",Liberal,0.97
+3148,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,70.98
+3148,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,28.98
+3149,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,82.16
+3149,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,17.84
+3150,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,76.77
+3150,Mulgrave District,"ANDREWS, Daniel",Australian Labor Party - Victorian Branch,21.88
+3150,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,1.34
+3151,Glen Waverley District,"MULLAHY, John",Australian Labor Party - Victorian Branch,47.85
+3151,Ashwood District,"FREGON, Matt",Australian Labor Party - Victorian Branch,31.15
+3151,Box Hill District,"HAMER, Paul",Australian Labor Party - Victorian Branch,20.99
+3152,Rowville District,"WELLS, Kim",Liberal,53.03
+3152,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,46.94
+3153,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,54.78
+3153,Croydon District,"HODGETT, David",Liberal,45.05
+3153,Ringwood District,"FOWLES, Will",Australian Labor Party - Victorian Branch,0.17
+3154,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,83.29
+3154,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,16.71
+3155,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,96.45
+3155,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,3.53
+3156,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,49.72
+3156,Rowville District,"WELLS, Kim",Liberal,26.86
+3156,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,14.74
+3156,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,8.68
+3163,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,87.6
+3163,Caulfield District,"SOUTHWICK, David",Liberal,12.39
+3167,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,57.7
+3167,Clarinda District,"TAK, Meng Heang",Australian Labor Party - Victorian Branch,42.27
+3170,Mulgrave District,"ANDREWS, Daniel",Australian Labor Party - Victorian Branch,99.32
+3170,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,0.63
+3173,Mordialloc District,"RICHARDSON, Tim",Australian Labor Party - Victorian Branch,67.05
+3173,Dandenong District,"WILLIAMS, Gabrielle",Australian Labor Party - Victorian Branch,23.61
+3173,Clarinda District,"TAK, Meng Heang",Australian Labor Party - Victorian Branch,9.33
+3174,Mulgrave District,"ANDREWS, Daniel",Australian Labor Party - Victorian Branch,53.12
+3174,Dandenong District,"WILLIAMS, Gabrielle",Australian Labor Party - Victorian Branch,37.55
+3174,Clarinda District,"TAK, Meng Heang",Australian Labor Party - Victorian Branch,9.33
+3175,Dandenong District,"WILLIAMS, Gabrielle",Australian Labor Party - Victorian Branch,58.18
+3175,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,27.75
+3175,Mordialloc District,"RICHARDSON, Tim",Australian Labor Party - Victorian Branch,12.22
+3175,Mulgrave District,"ANDREWS, Daniel",Australian Labor Party - Victorian Branch,1.78
+3177,Dandenong District,"WILLIAMS, Gabrielle",Australian Labor Party - Victorian Branch,98.38
+3177,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,1.62
+3180,Rowville District,"WELLS, Kim",Liberal,91.43
+3180,Bayswater District,"TAYLOR, Jackson",Australian Labor Party - Victorian Branch,8.57
+3182,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,75.04
+3182,Prahran District,"HIBBINS, Sam",Australian Greens,22.95
+3182,Caulfield District,"SOUTHWICK, David",Liberal,1.09
+3183,Caulfield District,"SOUTHWICK, David",Liberal,79.16
+3183,Prahran District,"HIBBINS, Sam",Australian Greens,20.75
+3184,Brighton District,"NEWBURY, James",Liberal,98.16
+3184,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,1.63
+3186,Brighton District,"NEWBURY, James",Liberal,99.38
+3186,Caulfield District,"SOUTHWICK, David",Liberal,0.38
+3187,Brighton District,"NEWBURY, James",Liberal,98.18
+3187,Bentleigh District,"STAIKOS, Nick",Australian Labor Party - Victorian Branch,1.82
+3188,Brighton District,"NEWBURY, James",Liberal,58.89
+3188,Sandringham District,"ROWSWELL, Brad",Liberal,41.09
+3189,Bentleigh District,"STAIKOS, Nick",Australian Labor Party - Victorian Branch,94.9
+3189,Sandringham District,"ROWSWELL, Brad",Liberal,3.07
+3189,Brighton District,"NEWBURY, James",Liberal,2.03
+3190,Sandringham District,"ROWSWELL, Brad",Liberal,69.48
+3190,Bentleigh District,"STAIKOS, Nick",Australian Labor Party - Victorian Branch,30.52
+3192,Sandringham District,"ROWSWELL, Brad",Liberal,40.28
+3192,Bentleigh District,"STAIKOS, Nick",Australian Labor Party - Victorian Branch,32.08
+3192,Clarinda District,"TAK, Meng Heang",Australian Labor Party - Victorian Branch,27.64
+3194,Clarinda District,"TAK, Meng Heang",Australian Labor Party - Victorian Branch,63.78
+3194,Sandringham District,"ROWSWELL, Brad",Liberal,34.83
+3194,Mordialloc District,"RICHARDSON, Tim",Australian Labor Party - Victorian Branch,1.38
+3196,Mordialloc District,"RICHARDSON, Tim",Australian Labor Party - Victorian Branch,73.56
+3196,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,26.11
+3197,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,99.12
+3197,Mordialloc District,"RICHARDSON, Tim",Australian Labor Party - Victorian Branch,0.58
+3198,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,66.27
+3198,Frankston District,"EDBROOKE, Paul",Australian Labor Party - Victorian Branch,33.66
+3200,Frankston District,"EDBROOKE, Paul",Australian Labor Party - Victorian Branch,81.02
+3200,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,18.97
+3204,Bentleigh District,"STAIKOS, Nick",Australian Labor Party - Victorian Branch,88.13
+3204,Caulfield District,"SOUTHWICK, David",Liberal,7.07
+3204,Oakleigh District,"DIMOPOULOS, Steve",Australian Labor Party - Victorian Branch,4.79
+3205,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,93.54
+3205,Prahran District,"HIBBINS, Sam",Australian Greens,6.46
+3207,Albert Park District,"TAYLOR, Nina",Australian Labor Party - Victorian Branch,98.87
+3211,Lara District,"GEORGE, Ella",Australian Labor Party - Victorian Branch,62.66
+3211,Werribee District,"PALLAS, Tim",Australian Labor Party - Victorian Branch,37.34
+3213,Lara District,"GEORGE, Ella",Australian Labor Party - Victorian Branch,90.54
+3213,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,5.42
+3213,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,4.04
+3214,Lara District,"GEORGE, Ella",Australian Labor Party - Victorian Branch,97.66
+3216,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,85.85
+3216,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,14.15
+3217,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,84.6
+3217,Polwarth District,"RIORDAN, Richard",Liberal,15.37
+3218,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,94.58
+3218,Lara District,"GEORGE, Ella",Australian Labor Party - Victorian Branch,5.18
+3218,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,0.2
+3221,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,99.26
+3221,Polwarth District,"RIORDAN, Richard",Liberal,0.62
+3221,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,0.12
+3224,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,55.12
+3224,Bellarine District,"MARCHANT, Alison",Australian Labor Party - Victorian Branch,44.54
+3225,Bellarine District,"MARCHANT, Alison",Australian Labor Party - Victorian Branch,99.48
+3227,Bellarine District,"MARCHANT, Alison",Australian Labor Party - Victorian Branch,51.79
+3227,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,47.98
+3240,Polwarth District,"RIORDAN, Richard",Liberal,73.5
+3240,South Barwon District,"CHEESEMAN, Darren",Australian Labor Party - Victorian Branch,26.5
+3265,Polwarth District,"RIORDAN, Richard",Liberal,21.19
+3265,Lowan District,"KEALY, Emma",The Nationals,20.17
+3268,Polwarth District,"RIORDAN, Richard",Liberal,69.78
+3270,Polwarth District,"RIORDAN, Richard",Liberal,53.58
+3271,Lowan District,"KEALY, Emma",The Nationals,90.23
+3271,Polwarth District,"RIORDAN, Richard",Liberal,9.76
+3274,Lowan District,"KEALY, Emma",The Nationals,69.77
+3289,Lowan District,"KEALY, Emma",The Nationals,74.4
+3301,Lowan District,"KEALY, Emma",The Nationals,88.35
+3302,Lowan District,"KEALY, Emma",The Nationals,88.21
+3303,Lowan District,"KEALY, Emma",The Nationals,22.14
+3304,Lowan District,"KEALY, Emma",The Nationals,41.74
+3321,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,60.87
+3321,Polwarth District,"RIORDAN, Richard",Liberal,39.12
+3322,Polwarth District,"RIORDAN, Richard",Liberal,61.02
+3322,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,38.98
+3323,Polwarth District,"RIORDAN, Richard",Liberal,96.02
+3323,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,3.98
+3329,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,89.0
+3329,Polwarth District,"RIORDAN, Richard",Liberal,11.0
+3331,Geelong District,"COUZENS, Christine",Australian Labor Party - Victorian Branch,61.84
+3331,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,38.11
+3335,Sydenham District,"HUTCHINS, Natalie",Australian Labor Party - Victorian Branch,62.84
+3335,Melton District,"McGHIE, Steve",Australian Labor Party - Victorian Branch,20.17
+3335,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,16.98
+3336,Sydenham District,"HUTCHINS, Natalie",Australian Labor Party - Victorian Branch,62.99
+3336,Kororoit District,"GRIGOROVITCH, Luba",Australian Labor Party - Victorian Branch,37.0
+3337,Melton District,"McGHIE, Steve",Australian Labor Party - Victorian Branch,98.61
+3337,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,1.31
+3338,Melton District,"McGHIE, Steve",Australian Labor Party - Victorian Branch,74.3
+3338,Werribee District,"PALLAS, Tim",Australian Labor Party - Victorian Branch,25.69
+3340,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,57.92
+3340,Lara District,"GEORGE, Ella",Australian Labor Party - Victorian Branch,19.48
+3340,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,11.92
+3340,Melton District,"McGHIE, Steve",Australian Labor Party - Victorian Branch,10.67
+3341,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,78.51
+3341,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,21.49
+3350,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,54.79
+3350,Wendouree District,"ADDISON, Juliana",Australian Labor Party - Victorian Branch,35.66
+3350,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,9.55
+3351,Lowan District,"KEALY, Emma",The Nationals,47.05
+3351,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,35.14
+3351,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,17.78
+3352,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,50.3
+3352,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,47.75
+3352,Polwarth District,"RIORDAN, Richard",Liberal,1.78
+3352,Wendouree District,"ADDISON, Juliana",Australian Labor Party - Victorian Branch,0.17
+3355,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,64.73
+3355,Wendouree District,"ADDISON, Juliana",Australian Labor Party - Victorian Branch,35.27
+3360,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,51.1
+3360,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,48.89
+3361,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,78.81
+3361,Polwarth District,"RIORDAN, Richard",Liberal,21.18
+3364,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,80.3
+3364,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,15.32
+3364,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,3.61
+3364,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,0.77
+3374,Lowan District,"KEALY, Emma",The Nationals,89.27
+3374,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,10.73
+3377,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,60.36
+3377,Lowan District,"KEALY, Emma",The Nationals,39.64
+3378,Lowan District,"KEALY, Emma",The Nationals,53.5
+3378,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,46.5
+3384,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,63.39
+3384,Lowan District,"KEALY, Emma",The Nationals,36.61
+3387,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,79.96
+3387,Lowan District,"KEALY, Emma",The Nationals,20.04
+3388,Lowan District,"KEALY, Emma",The Nationals,83.74
+3388,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,16.26
+3393,Lowan District,"KEALY, Emma",The Nationals,91.31
+3393,Mildura District,"BENHAM, Jade",The Nationals,8.69
+3395,Mildura District,"BENHAM, Jade",The Nationals,89.68
+3395,Lowan District,"KEALY, Emma",The Nationals,10.32
+3424,Lowan District,"KEALY, Emma",The Nationals,62.89
+3424,Mildura District,"BENHAM, Jade",The Nationals,37.11
+3430,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,82.82
+3430,Sunbury District,"BULL, Josh",Australian Labor Party - Victorian Branch,17.08
+3435,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,68.02
+3435,Euroa District,"CLEELAND, Annabelle",The Nationals,31.98
+3444,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,69.84
+3444,Euroa District,"CLEELAND, Annabelle",The Nationals,30.16
+3451,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,65.65
+3451,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,34.35
+3453,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,69.53
+3453,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,30.47
+3458,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,99.2
+3458,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,0.8
+3460,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,98.0
+3460,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,2.0
+3461,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,92.8
+3461,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,4.9
+3461,Eureka District,"SETTLE, Michaela",Australian Labor Party - Victorian Branch,2.29
+3463,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,80.95
+3463,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,19.05
+3464,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,89.45
+3464,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,10.55
+3465,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,98.59
+3465,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,1.41
+3477,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,98.34
+3477,Mildura District,"BENHAM, Jade",The Nationals,1.66
+3478,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,75.1
+3478,Mildura District,"BENHAM, Jade",The Nationals,24.9
+3480,Mildura District,"BENHAM, Jade",The Nationals,73.19
+3480,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,18.82
+3480,Lowan District,"KEALY, Emma",The Nationals,7.99
+3490,Mildura District,"BENHAM, Jade",The Nationals,81.36
+3490,Lowan District,"KEALY, Emma",The Nationals,18.64
+3515,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,88.77
+3515,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,11.23
+3516,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,86.32
+3516,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,11.09
+3516,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,2.59
+3517,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,60.11
+3517,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,26.67
+3517,Murray Plains District,"WALSH, Peter",The Nationals,13.21
+3518,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,80.62
+3518,Murray Plains District,"WALSH, Peter",The Nationals,14.88
+3518,Mildura District,"BENHAM, Jade",The Nationals,4.49
+3525,Mildura District,"BENHAM, Jade",The Nationals,67.55
+3525,Murray Plains District,"WALSH, Peter",The Nationals,17.69
+3525,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,14.77
+3527,Mildura District,"BENHAM, Jade",The Nationals,88.83
+3527,Murray Plains District,"WALSH, Peter",The Nationals,11.17
+3533,Mildura District,"BENHAM, Jade",The Nationals,96.76
+3533,Murray Plains District,"WALSH, Peter",The Nationals,3.24
+3544,Murray Plains District,"WALSH, Peter",The Nationals,79.92
+3544,Mildura District,"BENHAM, Jade",The Nationals,20.08
+3550,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,74.75
+3550,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,25.25
+3551,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,40.73
+3551,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,26.48
+3551,Euroa District,"CLEELAND, Annabelle",The Nationals,24.32
+3551,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,7.43
+3551,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,1.03
+3555,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,61.39
+3555,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,38.61
+3556,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,60.08
+3556,Bendigo West District,"EDWARDS, Maree",Australian Labor Party - Victorian Branch,23.09
+3556,Ripon District,"HAYLETT, Martha",Australian Labor Party - Victorian Branch,16.82
+3557,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,67.18
+3557,Euroa District,"CLEELAND, Annabelle",The Nationals,32.82
+3558,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,56.18
+3558,Euroa District,"CLEELAND, Annabelle",The Nationals,43.77
+3559,Euroa District,"CLEELAND, Annabelle",The Nationals,87.56
+3559,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,12.44
+3572,Murray Plains District,"WALSH, Peter",The Nationals,66.3
+3572,Bendigo East District,"ALLAN, Jacinta",Australian Labor Party - Victorian Branch,33.7
+3596,Mildura District,"BENHAM, Jade",The Nationals,87.85
+3596,Murray Plains District,"WALSH, Peter",The Nationals,12.14
+3614,Shepparton District,"O'KEEFFE, Kim",The Nationals,66.23
+3614,Euroa District,"CLEELAND, Annabelle",The Nationals,33.77
+3616,Euroa District,"CLEELAND, Annabelle",The Nationals,53.23
+3616,Shepparton District,"O'KEEFFE, Kim",The Nationals,40.63
+3616,Murray Plains District,"WALSH, Peter",The Nationals,6.14
+3618,Euroa District,"CLEELAND, Annabelle",The Nationals,91.93
+3618,Murray Plains District,"WALSH, Peter",The Nationals,8.07
+3620,Murray Plains District,"WALSH, Peter",The Nationals,89.08
+3620,Euroa District,"CLEELAND, Annabelle",The Nationals,10.76
+3620,Shepparton District,"O'KEEFFE, Kim",The Nationals,0.16
+3629,Murray Plains District,"WALSH, Peter",The Nationals,50.6
+3629,Shepparton District,"O'KEEFFE, Kim",The Nationals,49.4
+3630,Euroa District,"CLEELAND, Annabelle",The Nationals,69.59
+3630,Shepparton District,"O'KEEFFE, Kim",The Nationals,30.41
+3631,Shepparton District,"O'KEEFFE, Kim",The Nationals,67.8
+3631,Euroa District,"CLEELAND, Annabelle",The Nationals,32.2
+3634,Shepparton District,"O'KEEFFE, Kim",The Nationals,97.57
+3634,Ovens Valley District,"McCURDY, Tim",The Nationals,2.41
+3636,Shepparton District,"O'KEEFFE, Kim",The Nationals,55.96
+3636,Ovens Valley District,"McCURDY, Tim",The Nationals,44.04
+3640,Shepparton District,"O'KEEFFE, Kim",The Nationals,79.93
+3640,Ovens Valley District,"McCURDY, Tim",The Nationals,20.07
+3644,Ovens Valley District,"McCURDY, Tim",The Nationals,55.65
+3644,Shepparton District,"O'KEEFFE, Kim",The Nationals,0.21
+3646,Ovens Valley District,"McCURDY, Tim",The Nationals,69.13
+3646,Shepparton District,"O'KEEFFE, Kim",The Nationals,29.25
+3646,Euroa District,"CLEELAND, Annabelle",The Nationals,1.62
+3658,Euroa District,"CLEELAND, Annabelle",The Nationals,58.13
+3658,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,24.91
+3658,Eildon District,"McLEISH, Cindy",Liberal,16.95
+3660,Euroa District,"CLEELAND, Annabelle",The Nationals,67.56
+3660,Eildon District,"McLEISH, Cindy",Liberal,32.44
+3669,Euroa District,"CLEELAND, Annabelle",The Nationals,98.11
+3669,Eildon District,"McLEISH, Cindy",Liberal,1.89
+3675,Ovens Valley District,"McCURDY, Tim",The Nationals,60.92
+3675,Euroa District,"CLEELAND, Annabelle",The Nationals,39.08
+3682,Benambra District,"TILLEY, Bill",Liberal,54.14
+3682,Ovens Valley District,"McCURDY, Tim",The Nationals,45.85
+3685,Benambra District,"TILLEY, Bill",Liberal,88.82
+3685,Ovens Valley District,"McCURDY, Tim",The Nationals,11.02
+3691,Benambra District,"TILLEY, Bill",Liberal,74.37
+3691,Ovens Valley District,"McCURDY, Tim",The Nationals,25.01
+3697,Ovens Valley District,"McCURDY, Tim",The Nationals,99.1
+3697,Benambra District,"TILLEY, Bill",Liberal,0.88
+3699,Ovens Valley District,"McCURDY, Tim",The Nationals,56.94
+3699,Gippsland East District,"BULL, Tim",The Nationals,43.0
+3701,Benambra District,"TILLEY, Bill",Liberal,91.99
+3701,Gippsland East District,"BULL, Tim",The Nationals,7.99
+3707,Benambra District,"TILLEY, Bill",Liberal,80.93
+3707,Gippsland East District,"BULL, Tim",The Nationals,15.63
+3717,Eildon District,"McLEISH, Cindy",Liberal,98.26
+3717,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,1.74
+3723,Eildon District,"McLEISH, Cindy",Liberal,92.08
+3723,Ovens Valley District,"McCURDY, Tim",The Nationals,3.67
+3723,Euroa District,"CLEELAND, Annabelle",The Nationals,3.55
+3723,Gippsland East District,"BULL, Tim",The Nationals,0.7
+3725,Euroa District,"CLEELAND, Annabelle",The Nationals,82.83
+3725,Shepparton District,"O'KEEFFE, Kim",The Nationals,17.16
+3747,Benambra District,"TILLEY, Bill",Liberal,87.62
+3747,Ovens Valley District,"McCURDY, Tim",The Nationals,12.38
+3750,Thomastown District,"HALFPENNY, Bronwyn",Australian Labor Party - Victorian Branch,78.57
+3750,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,17.77
+3750,Mill Park District,"D'AMBROSIO, Lily",Australian Labor Party - Victorian Branch,3.65
+3752,Mill Park District,"D'AMBROSIO, Lily",Australian Labor Party - Victorian Branch,90.95
+3752,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,9.05
+3753,Kalkallo District,"SPENCE, Ros",Australian Labor Party - Victorian Branch,63.54
+3753,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,36.31
+3753,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,0.15
+3756,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,49.7
+3756,Kalkallo District,"SPENCE, Ros",Australian Labor Party - Victorian Branch,28.91
+3756,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,21.38
+3757,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,56.94
+3757,Eildon District,"McLEISH, Cindy",Liberal,43.06
+3758,Yan Yean District,"KATHAGE, Lauren",Australian Labor Party - Victorian Branch,62.75
+3758,Euroa District,"CLEELAND, Annabelle",The Nationals,37.24
+3762,Euroa District,"CLEELAND, Annabelle",The Nationals,72.28
+3762,Macedon District,"THOMAS, Mary-Anne",Australian Labor Party - Victorian Branch,27.71
+3765,Evelyn District,"VALLENCE, Bridget",Liberal,72.85
+3765,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,27.14
+3766,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,93.29
+3766,Evelyn District,"VALLENCE, Bridget",Liberal,6.71
+3783,Narracan District,"FARNHAM, Wayne",Liberal,51.49
+3783,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,47.99
+3783,Eildon District,"McLEISH, Cindy",Liberal,0.51
+3795,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,89.16
+3795,Evelyn District,"VALLENCE, Bridget",Liberal,10.84
+3804,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,70.19
+3804,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,29.81
+3805,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,51.63
+3805,Narre Warren South District,"MAAS, Gary",Australian Labor Party - Victorian Branch,47.25
+3805,Berwick District,"BATTIN, Brad",Liberal,1.12
+3806,Berwick District,"BATTIN, Brad",Liberal,91.41
+3806,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,8.54
+3808,Pakenham District,"VULIN, Emma",Australian Labor Party - Victorian Branch,54.39
+3808,Berwick District,"BATTIN, Brad",Liberal,45.51
+3808,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,0.1
+3812,Narracan District,"FARNHAM, Wayne",Liberal,91.39
+3812,Pakenham District,"VULIN, Emma",Australian Labor Party - Victorian Branch,6.02
+3812,Monbulk District,"DE MARTINO, Daniela",Australian Labor Party - Victorian Branch,2.59
+3824,Narracan District,"FARNHAM, Wayne",Liberal,97.22
+3824,Morwell District,"CAMERON, Martin",The Nationals,2.78
+3825,Narracan District,"FARNHAM, Wayne",Liberal,83.28
+3825,Morwell District,"CAMERON, Martin",The Nationals,9.13
+3825,Gippsland East District,"BULL, Tim",The Nationals,7.58
+3833,Narracan District,"FARNHAM, Wayne",Liberal,91.09
+3833,Eildon District,"McLEISH, Cindy",Liberal,8.91
+3840,Morwell District,"CAMERON, Martin",The Nationals,80.24
+3840,Gippsland South District,"O'BRIEN, Danny",The Nationals,19.76
+3844,Morwell District,"CAMERON, Martin",The Nationals,60.79
+3844,Gippsland South District,"O'BRIEN, Danny",The Nationals,39.2
+3851,Gippsland South District,"O'BRIEN, Danny",The Nationals,91.88
+3851,Gippsland East District,"BULL, Tim",The Nationals,8.11
+3854,Morwell District,"CAMERON, Martin",The Nationals,49.07
+3854,Gippsland South District,"O'BRIEN, Danny",The Nationals,46.86
+3854,Narracan District,"FARNHAM, Wayne",Liberal,4.08
+3856,Gippsland South District,"O'BRIEN, Danny",The Nationals,56.6
+3856,Narracan District,"FARNHAM, Wayne",Liberal,43.38
+3857,Gippsland South District,"O'BRIEN, Danny",The Nationals,93.8
+3857,Gippsland East District,"BULL, Tim",The Nationals,6.2
+3858,Gippsland East District,"BULL, Tim",The Nationals,90.34
+3858,Gippsland South District,"O'BRIEN, Danny",The Nationals,6.49
+3858,Eildon District,"McLEISH, Cindy",Liberal,3.17
+3862,Gippsland East District,"BULL, Tim",The Nationals,83.58
+3862,Ovens Valley District,"McCURDY, Tim",The Nationals,16.41
+3871,Gippsland South District,"O'BRIEN, Danny",The Nationals,91.18
+3871,Narracan District,"FARNHAM, Wayne",Liberal,8.81
+3880,Gippsland East District,"BULL, Tim",The Nationals,86.73
+3880,Gippsland South District,"O'BRIEN, Danny",The Nationals,13.25
+3892,Gippsland East District,"BULL, Tim",The Nationals,99.24
+3898,Gippsland East District,"BULL, Tim",The Nationals,92.46
+3898,Ovens Valley District,"McCURDY, Tim",The Nationals,7.54
+3911,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,92.55
+3911,Mornington District,"CREWTHER, Chris",Liberal,7.22
+3911,Frankston District,"EDBROOKE, Paul",Australian Labor Party - Victorian Branch,0.21
+3912,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,56.61
+3912,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,43.18
+3915,Mornington District,"CREWTHER, Chris",Liberal,60.01
+3915,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,39.64
+3918,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,98.95
+3919,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,98.81
+3920,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,97.36
+3922,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,99.27
+3923,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,99.33
+3925,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,98.16
+3926,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,53.37
+3926,Nepean District,"GROTH, Sam",Liberal,46.63
+3933,Mornington District,"CREWTHER, Chris",Liberal,93.06
+3933,Hastings District,"MERCURIO, Paul",Australian Labor Party - Victorian Branch,6.94
+3934,Mornington District,"CREWTHER, Chris",Liberal,98.31
+3934,Nepean District,"GROTH, Sam",Liberal,1.67
+3941,Nepean District,"GROTH, Sam",Liberal,99.2
+3942,Nepean District,"GROTH, Sam",Liberal,98.63
+3943,Nepean District,"GROTH, Sam",Liberal,99.08
+3944,Nepean District,"GROTH, Sam",Liberal,99.2
+3945,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,59.88
+3945,Gippsland South District,"O'BRIEN, Danny",The Nationals,40.12
+3950,Gippsland South District,"O'BRIEN, Danny",The Nationals,96.24
+3950,Narracan District,"FARNHAM, Wayne",Liberal,3.76
+3951,Gippsland South District,"O'BRIEN, Danny",The Nationals,87.35
+3951,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,12.65
+3953,Gippsland South District,"O'BRIEN, Danny",The Nationals,98.17
+3953,Narracan District,"FARNHAM, Wayne",Liberal,1.83
+3956,Gippsland South District,"O'BRIEN, Danny",The Nationals,96.5
+3960,Gippsland South District,"O'BRIEN, Danny",The Nationals,99.22
+3964,Gippsland South District,"O'BRIEN, Danny",The Nationals,97.69
+3975,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,69.64
+3975,Narre Warren South District,"MAAS, Gary",Australian Labor Party - Victorian Branch,30.36
+3976,Narre Warren South District,"MAAS, Gary",Australian Labor Party - Victorian Branch,90.71
+3976,Narre Warren North District,"WILSON, Belinda",Australian Labor Party - Victorian Branch,9.29
+3977,Cranbourne District,"RICHARDS, Pauline",Australian Labor Party - Victorian Branch,39.98
+3977,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,30.54
+3977,Carrum District,"KILKENNY, Sonya",Australian Labor Party - Victorian Branch,13.85
+3977,Narre Warren South District,"MAAS, Gary",Australian Labor Party - Victorian Branch,7.21
+3978,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,55.36
+3978,Berwick District,"BATTIN, Brad",Liberal,27.44
+3978,Pakenham District,"VULIN, Emma",Australian Labor Party - Victorian Branch,10.54
+3978,Cranbourne District,"RICHARDS, Pauline",Australian Labor Party - Victorian Branch,6.63
+3980,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,97.97
+3981,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,91.6
+3981,Narracan District,"FARNHAM, Wayne",Liberal,8.34
+3984,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,98.2
+3984,Gippsland South District,"O'BRIEN, Danny",The Nationals,1.7
+3987,Gippsland South District,"O'BRIEN, Danny",The Nationals,85.56
+3987,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,12.17
+3987,Narracan District,"FARNHAM, Wayne",Liberal,2.27
+3988,Gippsland South District,"O'BRIEN, Danny",The Nationals,76.68
+3988,Narracan District,"FARNHAM, Wayne",Liberal,23.31
+3996,Bass District,"CRUGNALE, Jordan",Australian Labor Party - Victorian Branch,61.64
+3996,Gippsland South District,"O'BRIEN, Danny",The Nationals,33.41
