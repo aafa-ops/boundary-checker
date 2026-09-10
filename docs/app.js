@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "1"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "2"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -12,8 +12,10 @@ const state = {
   unitBoundsCache: {},      // kind -> Map(id -> L.LatLngBounds), precomputed once per kind for viewport filtering
   lookup: {},               // postcodes/suburbs/lgas lookup JSON, loaded on demand
   crosswalk: null,
-  boundaryWeight: 2.5,
+  districtBoundaryWeight: 3.5,
+  unitBoundaryWeight: 1.5,
   partyOpacity: 0.55,
+  districtFilter: null,     // { name, label } when the split list is showing "what's in this district"
 };
 
 const LABEL_ZOOM = { postcodes: 10, suburbs: 12, lgas: 8 };
@@ -39,22 +41,29 @@ async function fetchTopoAsGeoJSON(path) {
 
 function districtPopupHTML(props) {
   const margin = props.margin_pct_points != null ? `${props.margin_pct_points}%` : "n/a";
+  const labelEscaped = props.district_label.replace(/'/g, "\\'");
   return `
     <h3>${props.district_label}</h3>
     <div>${props.region_label || ""}</div>
     <table>
       <tr><td><b>Member</b></td><td>${props.member}</td></tr>
-      <tr><td><b>Party</b></td><td><span class="swatch" style="background:${props.party_colour};display:inline-block;width:10px;height:10px;border-radius:2px;"></span> ${props.party}</td></tr>
+      <tr><td><b>Party</b></td><td><span class="swatch" style="background:${props.party_colour}"></span> ${props.party}</td></tr>
       <tr><td><b>Margin</b></td><td>${margin} (2022, over ${props.runner_up_party || "runner-up"})</td></tr>
-    </table>`;
+    </table>
+    <div class="popup-actions">
+      <div class="hint" style="margin:0 0 4px;">List what's inside this district, with % of each:</div>
+      <button onclick="showUnitsInDistrict('${props.district_name}', '${labelEscaped}', 'postcodes')">Postcodes</button>
+      <button onclick="showUnitsInDistrict('${props.district_name}', '${labelEscaped}', 'suburbs')">Suburbs</button>
+      <button onclick="showUnitsInDistrict('${props.district_name}', '${labelEscaped}', 'lgas')">LGAs</button>
+    </div>`;
 }
 
-function unitPopupHTML(name, kindLabel, props) {
-  const badge = props.is_split
-    ? `<span class="status-badge status-split">Split</span>`
+function unitPopupHTML(entry, kindLabel) {
+  const badge = entry.is_split
+    ? `<span class="status-badge status-split">Split across ${entry.district_count} districts</span>`
     : `<span class="status-badge status-full">Fully within one district</span>`;
-  return `<h3>${name}</h3>${badge}<div>${kindLabel} — primary district: <b>${props.primary_district}</b> (${props.primary_pct}%)</div>
-    <div style="margin-top:4px;font-size:12px;color:#666;">${props.district_count} district${props.district_count === 1 ? "" : "s"} touched.</div>`;
+  return `<h3>${entry.name}</h3><div style="font-size:11px;color:#888;margin-bottom:4px;">${kindLabel}</div>${badge}`
+    + entry.districts.map(districtRowHTML).join("");
 }
 
 async function loadBoundary() {
@@ -72,7 +81,7 @@ async function loadDistricts() {
     smoothFactor: 2,
     style: (f) => ({
       color: "#444",
-      weight: state.boundaryWeight,
+      weight: state.districtBoundaryWeight,
       fillColor: f.properties.party_colour,
       fillOpacity: state.partyOpacity,
     }),
@@ -83,10 +92,14 @@ async function loadDistricts() {
   buildPartyLegend(fc);
 }
 
-function applyBoundaryWeight(weight) {
-  state.boundaryWeight = weight;
+function applyDistrictBoundaryWeight(weight) {
+  state.districtBoundaryWeight = weight;
   if (state.districtsLayer) state.districtsLayer.setStyle({ weight });
-  if (state.unitLayerGroup) state.unitLayerGroup.setStyle({ weight: weight + 0.5 });
+}
+
+function applyUnitBoundaryWeight(weight) {
+  state.unitBoundaryWeight = weight;
+  if (state.unitLayerGroup) state.unitLayerGroup.setStyle({ weight });
 }
 
 function applyPartyOpacity(opacity) {
@@ -136,7 +149,7 @@ async function setUnitLayer(kind) {
   }
   const cfg = UNIT_CONFIG[kind];
   if (!state.unitCache[kind]) {
-    const fc = await fetchTopoAsGeoJSON(cfg.file);
+    const [fc] = await Promise.all([fetchTopoAsGeoJSON(cfg.file), getLookup(kind)]);
     state.unitCache[kind] = fc;
     // Precompute each feature's bounds once - lets us viewport-filter on every
     // pan/zoom without re-walking coordinates, and locate off-screen units
@@ -144,6 +157,8 @@ async function setUnitLayer(kind) {
     state.unitBoundsCache[kind] = new Map(
       fc.features.map((f) => [f.properties[cfg.idProp], L.geoJSON(f).getBounds()])
     );
+  } else {
+    await getLookup(kind); // no-op once cached; guards a direct setUnitLayer call before init
   }
   refreshUnitLayer();
 }
@@ -166,6 +181,7 @@ function refreshUnitLayer() {
 
   const fc = state.unitCache[kind];
   const boundsCache = state.unitBoundsCache[kind];
+  const lookup = state.lookup[kind] || {};
   const viewBounds = map.getBounds().pad(0.25);
   let visible = fc.features.filter((f) => viewBounds.intersects(boundsCache.get(f.properties[cfg.idProp])));
   if (visible.length > MAX_RENDERED_UNITS) visible = visible.slice(0, MAX_RENDERED_UNITS);
@@ -174,14 +190,16 @@ function refreshUnitLayer() {
     smoothFactor: 2,
     style: (f) => ({
       color: f.properties.is_split ? SPLIT_COLOUR : FULL_COLOUR,
-      weight: state.boundaryWeight + 0.5,
+      weight: state.unitBoundaryWeight,
       fill: false,
     }),
     onEachFeature: (f, l) => {
+      const id = f.properties[cfg.idProp];
       const name = f.properties[cfg.nameProp];
-      l.bindPopup(unitPopupHTML(name, cfg.label, f.properties));
+      const entry = lookup[id];
+      if (entry) l.bindPopup(unitPopupHTML(entry, cfg.label));
       l.bindTooltip(name, { permanent: true, direction: "center", className: "unit-label" });
-      state.unitLayerIndex[f.properties[cfg.idProp]] = l;
+      state.unitLayerIndex[id] = l;
     },
   });
   state.unitLayerGroup = layer;
@@ -203,7 +221,8 @@ map.on("moveend", refreshUnitLayer);
 document.querySelectorAll('input[name="unit-layer"]').forEach((radio) => {
   radio.addEventListener("change", (e) => setUnitLayer(e.target.value));
 });
-document.getElementById("slider-boundary").addEventListener("input", (e) => applyBoundaryWeight(parseFloat(e.target.value)));
+document.getElementById("slider-district-boundary").addEventListener("input", (e) => applyDistrictBoundaryWeight(parseFloat(e.target.value)));
+document.getElementById("slider-unit-boundary").addEventListener("input", (e) => applyUnitBoundaryWeight(parseFloat(e.target.value)));
 document.getElementById("slider-party").addEventListener("input", (e) => applyPartyOpacity(parseFloat(e.target.value)));
 
 // ---------- Splits table ----------
@@ -224,15 +243,30 @@ async function renderSplitTable(kind, filterText) {
   const lookup = await getLookup(kind);
   const tbody = document.querySelector("#split-table tbody");
   tbody.innerHTML = "";
+  const statusEl = document.getElementById("district-filter-status");
   const rows = [];
-  for (const unitId in lookup) {
-    const entry = lookup[unitId];
-    if (!entry.is_split) continue;
-    if (filterText && !entry.name.toLowerCase().includes(filterText.toLowerCase())) continue;
-    for (const d of entry.districts) {
-      rows.push({ unitId, name: entry.name, ...d });
+
+  if (state.districtFilter) {
+    const { name, label } = state.districtFilter;
+    for (const unitId in lookup) {
+      const entry = lookup[unitId];
+      if (filterText && !entry.name.toLowerCase().includes(filterText.toLowerCase())) continue;
+      const match = entry.districts.find((d) => d.district === name);
+      if (!match) continue;
+      rows.push({ unitId, name: entry.name, ...match });
+    }
+    statusEl.hidden = false;
+    statusEl.innerHTML = `Showing every ${UNIT_CONFIG[kind].label.toLowerCase()} touching <b>${label}</b> (${rows.length}) <button onclick="clearDistrictFilter()">Clear</button>`;
+  } else {
+    statusEl.hidden = true;
+    for (const unitId in lookup) {
+      const entry = lookup[unitId];
+      if (!entry.is_split) continue;
+      if (filterText && !entry.name.toLowerCase().includes(filterText.toLowerCase())) continue;
+      for (const d of entry.districts) rows.push({ unitId, name: entry.name, ...d });
     }
   }
+
   rows.sort((a, b) => a.name.localeCompare(b.name) || b.pct_area - a.pct_area);
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="5" id="split-table-empty">No matches.</td></tr>`;
@@ -246,6 +280,21 @@ async function renderSplitTable(kind, filterText) {
     frag.appendChild(tr);
   }
   tbody.appendChild(frag);
+}
+
+async function showUnitsInDistrict(districtName, districtLabel, kind) {
+  state.districtFilter = { name: districtName, label: districtLabel };
+  const radio = document.querySelector(`input[name="split-type"][value="${kind}"]`);
+  if (radio) radio.checked = true;
+  currentSplitKind = kind;
+  document.getElementById("split-search").value = "";
+  await renderSplitTable(kind, "");
+  document.getElementById("splits-full").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function clearDistrictFilter() {
+  state.districtFilter = null;
+  renderSplitTable(currentSplitKind, document.getElementById("split-search").value);
 }
 
 async function locateUnitOnMap(kind, unitId) {

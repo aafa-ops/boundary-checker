@@ -94,6 +94,19 @@ input[type="text"]:focus { outline: 2px solid var(--aafa-teal-light); border-col
 .hint { font-size: 12px; color: #666; line-height: 1.45; margin: 6px 0; }
 #splits-full > .hint { max-width: 900px; }
 
+.legend-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 8px 0;
+}
+.legend-box .row { display: flex; align-items: center; gap: 6px; }
+
 .legend-dot {
   display: inline-block;
   width: 10px; height: 10px;
@@ -105,22 +118,23 @@ input[type="text"]:focus { outline: 2px solid var(--aafa-teal-light); border-col
 .legend-split { background: #e8590c; }
 
 #lookup-result { margin-top: 10px; font-size: 13px; }
-#lookup-result .district-row {
+/* Shared by the sidebar lookup panel AND Leaflet popups (unit + district breakdowns) */
+.district-row {
   display: flex;
   justify-content: space-between;
   gap: 6px;
   padding: 6px 0;
   border-bottom: 1px dashed #ddd;
 }
-#lookup-result .district-row:last-child { border-bottom: none; }
-#lookup-result .swatch {
+.district-row:last-child { border-bottom: none; }
+.swatch {
   display: inline-block;
   width: 10px; height: 10px;
   border-radius: 2px;
   margin-right: 6px;
   flex-shrink: 0;
 }
-#lookup-result .status-badge {
+.status-badge {
   display: inline-block;
   font-size: 11px;
   padding: 2px 7px;
@@ -166,6 +180,40 @@ input[type="text"]:focus { outline: 2px solid var(--aafa-teal-light); border-col
 .leaflet-popup-content h3 { margin: 0 0 4px; font-size: 14px; color: var(--aafa-teal-dark); }
 .leaflet-popup-content table { border-collapse: collapse; margin-top: 6px; }
 .leaflet-popup-content td { padding: 2px 6px 2px 0; font-size: 12px; }
+.leaflet-popup-content .district-row { font-size: 12px; }
+
+.popup-actions { margin-top: 8px; padding-top: 6px; border-top: 1px solid #eee; }
+.popup-actions button {
+  font-size: 11px;
+  padding: 3px 8px;
+  margin: 2px 4px 2px 0;
+  border-radius: 10px;
+  border: 1px solid var(--aafa-teal-mid);
+  background: #fff;
+  color: var(--aafa-teal-dark);
+  cursor: pointer;
+}
+.popup-actions button:hover { background: var(--aafa-teal-light); }
+
+#district-filter-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  background: #eef7f4;
+  border: 1px solid var(--aafa-teal-light);
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+#district-filter-status button {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
 
 .unit-label {
   background: none;
