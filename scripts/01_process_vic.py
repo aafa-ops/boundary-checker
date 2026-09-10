@@ -41,14 +41,25 @@ def party_colour(party: str) -> str:
     return PARTY_COLOURS.get(party, "#888888")
 
 
+def _normalize_district_name(name: str) -> str:
+    # VEC's boundary layer hyphenates some names ("South-West Coast") while the
+    # results CSV doesn't ("South West Coast") - normalize both sides so the
+    # join doesn't silently drop a district (it dropped exactly this one for
+    # every run until this was caught).
+    return name.replace("-", " ").strip().lower()
+
+
 def load_districts() -> gpd.GeoDataFrame:
     districts = gpd.read_file(RAW / "vec/VEC_STATE_ASSEMBLY_2022_districts.geojson")
     results = pd.read_csv(RAW / "vec/VEC_2022_state_election_results_by_district.csv")
-    districts["district_join"] = districts["district_label"].str.replace(
-        " District", "", regex=False
+    districts["district_join"] = (
+        districts["district_label"].str.replace(" District", "", regex=False)
+        .map(_normalize_district_name)
     )
-    districts = districts.merge(
-        results, left_on="district_join", right_on="district", suffixes=("", "_result")
+    results["district_join"] = results["district"].map(_normalize_district_name)
+    districts = districts.merge(results, on="district_join", suffixes=("", "_result"))
+    assert len(districts) == len(results), (
+        f"expected all {len(results)} districts to join, got {len(districts)}"
     )
     districts["runner_up_party"] = districts["runner_up_party"].fillna("Independent")
     districts["party_colour"] = districts["party"].map(party_colour)
@@ -258,24 +269,26 @@ def main():
     vic_boundary_web.geometry = vic_boundary_web.geometry.simplify(100, preserve_topology=True)
     write_topojson(vic_boundary_web.to_crs(WEB_CRS), ["geometry"], "vic_boundary.topojson")
 
-    districts_web = districts.to_crs(WEB_CRS)
+    districts_web = districts.copy()
+    districts_web.geometry = districts_web.geometry.simplify(120, preserve_topology=True)
+    districts_web = districts_web.to_crs(WEB_CRS)
     write_topojson(districts_web, [
         "district_name", "district_label", "region_label", "member", "party",
         "party_colour", "winner_pct", "runner_up", "runner_up_party",
         "runner_up_pct", "margin_pct_points", "margin_basis", "geometry"
     ], "vic_districts.topojson")
 
-    poa_web = simplify_and_attach(poa, "POA_CODE21", "POA_NAME21", poa_flags, 5)
+    poa_web = simplify_and_attach(poa, "POA_CODE21", "POA_NAME21", poa_flags, 40)
     write_topojson(poa_web, ["POA_CODE21", "POA_NAME21", "is_split", "primary_district",
                               "primary_pct", "district_count", "geometry"],
                    "vic_postcodes.topojson")
 
-    sal_web = simplify_and_attach(sal, "SAL_CODE21", "SAL_NAME21", sal_flags, 5)
+    sal_web = simplify_and_attach(sal, "SAL_CODE21", "SAL_NAME21", sal_flags, 40)
     write_topojson(sal_web, ["SAL_CODE21", "SAL_NAME21", "is_split", "primary_district",
                              "primary_pct", "district_count", "geometry"],
                    "vic_suburbs.topojson")
 
-    lga_web = simplify_and_attach(lga, "LGA_CODE25", "LGA_NAME25", lga_flags, 5)
+    lga_web = simplify_and_attach(lga, "LGA_CODE25", "LGA_NAME25", lga_flags, 80)
     write_topojson(lga_web, ["LGA_CODE25", "LGA_NAME25", "is_split", "primary_district",
                              "primary_pct", "district_count", "geometry"],
                    "vic_lgas.topojson")

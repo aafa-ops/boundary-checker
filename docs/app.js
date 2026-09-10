@@ -16,7 +16,7 @@ const state = {
 
 const LABEL_ZOOM = { postcodes: 10, suburbs: 12, lgas: 8 };
 
-const map = L.map("map", { zoomControl: true }).setView([-36.9, 144.4], 7);
+const map = L.map("map", { zoomControl: true, renderer: L.canvas() }).setView([-36.9, 144.4], 7);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
