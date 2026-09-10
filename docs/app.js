@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "3"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "4"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -99,7 +99,8 @@ function applyDistrictBoundaryWeight(weight) {
 
 function applyUnitBoundaryWeight(weight) {
   state.unitBoundaryWeight = weight;
-  if (state.unitLayerGroup) state.unitLayerGroup.setStyle({ weight });
+  if (state.unitMainLayer) state.unitMainLayer.setStyle({ weight });
+  if (state.unitCasingLayer) state.unitCasingLayer.setStyle({ weight: weight + 2.5 });
 }
 
 function applyPartyOpacity(opacity) {
@@ -132,6 +133,8 @@ function clearUnitLayer() {
   if (state.unitLayerGroup) {
     map.removeLayer(state.unitLayerGroup);
     state.unitLayerGroup = null;
+    state.unitMainLayer = null;
+    state.unitCasingLayer = null;
   }
   state.unitLayerIndex = {};
 }
@@ -186,7 +189,16 @@ function refreshUnitLayer() {
   let visible = fc.features.filter((f) => viewBounds.intersects(boundsCache.get(f.properties[cfg.idProp])));
   if (visible.length > MAX_RENDERED_UNITS) visible = visible.slice(0, MAX_RENDERED_UNITS);
 
-  const layer = L.geoJSON({ type: "FeatureCollection", features: visible }, {
+  // A white casing behind the coloured line keeps it visible regardless of
+  // which party's fill colour it happens to sit on (plain orange all but
+  // vanished against a Labor-red district, for instance).
+  const featureCollection = { type: "FeatureCollection", features: visible };
+  const casing = L.geoJSON(featureCollection, {
+    smoothFactor: 2,
+    interactive: false,
+    style: () => ({ color: "#fff", weight: state.unitBoundaryWeight + 2.5, opacity: 0.9, fill: false }),
+  });
+  const main = L.geoJSON(featureCollection, {
     smoothFactor: 2,
     style: (f) => ({
       color: f.properties.is_split ? SPLIT_COLOUR : FULL_COLOUR,
@@ -202,16 +214,19 @@ function refreshUnitLayer() {
       state.unitLayerIndex[id] = l;
     },
   });
-  state.unitLayerGroup = layer;
-  layer.addTo(map);
+  const layerGroup = L.layerGroup([casing, main]);
+  state.unitLayerGroup = layerGroup;
+  state.unitMainLayer = main;
+  state.unitCasingLayer = casing;
+  layerGroup.addTo(map);
   updateLabelVisibility();
 }
 
 function updateLabelVisibility() {
   const kind = state.unitLayerKind;
-  if (!state.unitLayerGroup || kind === "none") return;
+  if (!state.unitMainLayer || kind === "none") return;
   const shouldShow = map.getZoom() >= LABEL_ZOOM[kind];
-  state.unitLayerGroup.eachLayer((l) => {
+  state.unitMainLayer.eachLayer((l) => {
     if (shouldShow) l.openTooltip();
     else l.closeTooltip();
   });
