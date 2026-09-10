@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "2"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "3"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -331,11 +331,14 @@ document.getElementById("split-search").addEventListener("input", (e) => {
 // ---------- Lookup panel: postcode -> suburb -> address ----------
 function districtRowHTML(d) {
   const margin = d.margin_pct_points != null ? `${d.margin_pct_points}%` : "n/a";
+  const tcp = d.winner_pct != null && d.runner_up_pct != null
+    ? ` — won ${d.winner_pct}% to ${d.runner_up_pct}% (${d.runner_up_party || "runner-up"})`
+    : "";
   return `<div class="district-row">
     <span><span class="swatch" style="background:${d.party_colour}"></span>${d.district_label}</span>
     <span>${d.pct_area}%</span>
   </div>
-  <div style="font-size:12px;color:#555;margin:-4px 0 6px 16px;">${d.member} (${d.party}), margin ${margin}</div>`;
+  <div style="font-size:12px;color:#555;margin:-4px 0 6px 16px;">${d.member} (${d.party}), margin ${margin}${tcp}</div>`;
 }
 
 async function handlePostcodeInput(value) {

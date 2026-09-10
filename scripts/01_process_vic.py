@@ -109,14 +109,16 @@ def compute_overlap(units: gpd.GeoDataFrame, unit_id: str, unit_name: str,
     pieces = gpd.overlay(
         units[[unit_id, unit_name, "_full_area", "geometry"]],
         districts[["district_name", "district_label", "member", "party",
-                   "party_colour", "margin_pct_points", "geometry"]],
+                   "party_colour", "margin_pct_points", "winner_pct",
+                   "runner_up_party", "runner_up_pct", "geometry"]],
         how="intersection",
         keep_geom_type=True,
     )
     pieces["_piece_area"] = pieces.geometry.area
     grouped = (
         pieces.groupby([unit_id, unit_name, "district_name", "district_label",
-                        "member", "party", "party_colour", "margin_pct_points"],
+                        "member", "party", "party_colour", "margin_pct_points",
+                        "winner_pct", "runner_up_party", "runner_up_pct"],
                        dropna=False)["_piece_area"]
         .sum()
         .reset_index()
@@ -173,6 +175,9 @@ def build_lookup_and_flags(overlap_df: pd.DataFrame, unit_id: str, unit_name: st
                 "party": row.party,
                 "party_colour": row.party_colour,
                 "margin_pct_points": None if pd.isna(row.margin_pct_points) else row.margin_pct_points,
+                "winner_pct": None if pd.isna(row.winner_pct) else row.winner_pct,
+                "runner_up_party": None if pd.isna(row.runner_up_party) else row.runner_up_party,
+                "runner_up_pct": None if pd.isna(row.runner_up_pct) else row.runner_up_pct,
                 "pct_area": row.pct_area,
             }
             for row in group_sorted.itertuples()
