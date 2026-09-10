@@ -31,7 +31,7 @@ FULLY_WITHIN_THRESHOLD = 99.5  # % of a unit's area in one district counts as "f
 PARTY_COLOURS = {
     "Australian Labor Party - Victorian Branch": "#E4002B",
     "Liberal": "#0047AB",
-    "The Nationals": "#006A4E",
+    "The Nationals": "#B8860B",  # brown/gold - was a dark green near-identical to Greens on the map
     "Australian Greens": "#1C8A43",
     "Independent": "#888888",
 }
