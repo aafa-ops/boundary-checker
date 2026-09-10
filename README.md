@@ -34,6 +34,7 @@ commit, push.
 | 2022 state election results by district | Scraped from VEC's per-district results pages (vec.vic.gov.au) | Victorian Government public sector information |
 | Basemap tiles | OpenStreetMap standard tiles | © OpenStreetMap contributors |
 | Address search | OpenStreetMap Nominatim | Usage-policy-compliant, low-volume, attributed in the UI |
+| VIC farm/slaughterhouse facilities | [Farm Transparency Project](https://www.farmtransparency.org/map)'s "Reports / Export Data" CSV export (their own first-party export feature, not scraped) | See caveats below - crowdsourced, not a government dataset |
 
 All of this is public data — nothing in the repo or the deployed site is
 confidential.
@@ -96,13 +97,25 @@ environments have been observed caching these by URL regardless of
   Post 3xxx/8xxx prefixes, not by spatial intersection with the state
   boundary — the latter was pulling in NSW border postcodes with sub-1%
   slivers from imprecise river-boundary alignment.
+- **Farm/slaughterhouse facility data is crowdsourced, not a government
+  register.** Farm Transparency Project builds it from public
+  directories/reports plus community submissions - some entries are tagged
+  `(unconfirmed)` in their own data, or named "Unknown". The predecessor
+  "Aussie Farms Map" was the subject of public/political controversy in 2019
+  (the federal Agriculture Minister at the time called for it to be taken
+  down over farmer-safety/biosecurity concerns); it's still operating. Treat
+  any single listing as a lead to verify via its linked FTP profile page, not
+  as a verified record - don't present it as AAFA's own confirmed finding.
 
 ## Possible future additions
 
-- 2021 Census population by postcode/suburb (in progress).
+- 2021 Census population by postcode/suburb (agreed with AAFA, not yet built).
 - Polling-place-level result aggregation by suburb/postcode, clearly labelled
   as an approximation, to help identify target suburbs — flagged as useful
   by AAFA but intentionally not built yet given the postal/pre-poll coverage
   gap above.
 - Federal electorate + state-level maps for other states, per the original
   brief (this repo currently covers VIC state electorates only).
+- ABARES land-use data (e.g. Catchment Scale Land Use of Australia) as a
+  complementary authoritative layer - classifies land use type but doesn't
+  name specific businesses, so it wouldn't replace the FTP facility layer.

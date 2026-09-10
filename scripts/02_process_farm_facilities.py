@@ -40,8 +40,8 @@ CATEGORY_BUCKETS = [
 OTHER_BUCKET = ("Other (zoo, pet breeder, experimentation, etc.)", "#757575")
 
 
-def bucket_for(categories: str):
-    cats = categories or ""
+def bucket_for(categories):
+    cats = categories if isinstance(categories, str) else ""
     for needle, label, colour in CATEGORY_BUCKETS:
         if needle.lower() in cats.lower():
             return label, colour
@@ -49,7 +49,7 @@ def bucket_for(categories: str):
 
 
 def load_polygon_layer(path: str, id_prop: str, name_prop: str):
-    gdf = gpd.read_file(path)
+    gdf = gpd.read_file(path).to_crs(AREA_CRS)
     return gdf[[id_prop, name_prop, "geometry"]].rename(
         columns={id_prop: "_id", name_prop: "_name"}
     )

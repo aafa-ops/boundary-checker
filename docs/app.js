@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "5"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "9"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -26,6 +26,13 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
 }).addTo(map);
+
+// Leaflet's default popup position puts the click point (and whatever's
+// under it) roughly behind the popup's centre, obscuring the area you just
+// clicked on. Empirically measured (most of this app's popups render at a
+// similar ~345px width, Leaflet's own max-width) so the popup's bottom-left
+// corner lands on the click point instead - leaving the clicked area clear.
+const POPUP_OFFSET = L.point(-127, -47);
 
 async function fetchJSON(url, { versioned = false } = {}) {
   const finalUrl = versioned ? `${url}${url.includes("?") ? "&" : "?"}v=${ASSET_VERSION}` : url;
@@ -85,7 +92,7 @@ async function loadDistricts() {
       fillColor: f.properties.party_colour,
       fillOpacity: state.partyOpacity,
     }),
-    onEachFeature: (f, l) => l.bindPopup(districtPopupHTML(f.properties)),
+    onEachFeature: (f, l) => l.bindPopup(districtPopupHTML(f.properties), { offset: POPUP_OFFSET }),
   });
   state.districtsLayer = layer;
   layer.addTo(map);
@@ -101,6 +108,7 @@ function applyUnitBoundaryWeight(weight) {
   state.unitBoundaryWeight = weight;
   if (state.unitMainLayer) state.unitMainLayer.setStyle({ weight });
   if (state.unitCasingLayer) state.unitCasingLayer.setStyle({ weight: weight + 2.5 });
+  if (state.highlightedUnitLayer) state.highlightedUnitLayer.setStyle({ weight: weight + HIGHLIGHT_EXTRA_WEIGHT });
 }
 
 function applyPartyOpacity(opacity) {
@@ -129,6 +137,17 @@ const UNIT_CONFIG = {
   lgas: { file: "vic_lgas.topojson", idProp: "LGA_CODE25", nameProp: "LGA_NAME25", label: "LGA", minRenderZoom: 6 },
 };
 
+const HIGHLIGHT_EXTRA_WEIGHT = 4;
+
+function highlightUnitLayer(layer) {
+  if (state.highlightedUnitLayer && state.highlightedUnitLayer !== layer) {
+    state.highlightedUnitLayer.setStyle({ weight: state.unitBoundaryWeight });
+  }
+  state.highlightedUnitLayer = layer;
+  layer.setStyle({ weight: state.unitBoundaryWeight + HIGHLIGHT_EXTRA_WEIGHT });
+  layer.bringToFront();
+}
+
 function clearUnitLayer() {
   if (state.unitLayerGroup) {
     map.removeLayer(state.unitLayerGroup);
@@ -137,6 +156,7 @@ function clearUnitLayer() {
     state.unitCasingLayer = null;
   }
   state.unitLayerIndex = {};
+  state.highlightedUnitLayer = null;
 }
 
 function setZoomHint(text) {
@@ -209,11 +229,12 @@ function refreshUnitLayer() {
       const id = f.properties[cfg.idProp];
       const name = f.properties[cfg.nameProp];
       const entry = lookup[id];
-      if (entry) l.bindPopup(unitPopupHTML(entry, cfg.label));
+      if (entry) l.bindPopup(unitPopupHTML(entry, cfg.label), { offset: POPUP_OFFSET });
       l.bindTooltip(name, { permanent: true, direction: "center", className: "unit-label" });
       state.unitLayerIndex[id] = l;
     },
   });
+  main.on("popupopen", (e) => highlightUnitLayer(e.layer));
   const layerGroup = L.layerGroup([casing, main]);
   state.unitLayerGroup = layerGroup;
   state.unitMainLayer = main;
@@ -459,6 +480,74 @@ async function geocodeAndMatch() {
 }
 
 document.getElementById("postcode-input").addEventListener("input", (e) => handlePostcodeInput(e.target.value));
+
+// ---------- Farm & slaughterhouse facilities ----------
+// Source: Farm Transparency Project's own "Reports / Export Data" CSV export
+// (farmtransparency.org/map) - a first-party feature of their site, not
+// scraped. See README for the exact source and the processing pipeline.
+let farmFacilitiesData = null;
+let farmFacilitiesLayer = null;
+
+function farmPopupHTML(p) {
+  const statusBadge = p.status === "Open"
+    ? `<span class="status-badge status-full">Open</span>`
+    : `<span class="status-badge status-split">${p.status || "Status unknown"}</span>`;
+  const location = [p.street, p.suburb_name || p.suburb_raw, p.postcode_name].filter(Boolean).join(", ");
+  return `<h3>${p.name}</h3>
+    <div style="font-size:11px;color:#888;margin-bottom:4px;">${p.category_label}${p.species ? " — " + p.species : ""}</div>
+    ${statusBadge}
+    <div style="font-size:12px;margin-top:6px;line-height:1.5;">
+      ${location}<br>
+      ${p.district_label ? `District: <b>${p.district_label}</b><br>` : ""}
+      ${p.lga_name ? `LGA: ${p.lga_name}<br>` : ""}
+      ${p.owned_by ? `Owned by: ${p.owned_by}<br>` : ""}
+    </div>
+    <div class="popup-actions"><a href="${p.profile_url}" target="_blank" rel="noopener">Full profile on Farm Transparency Project ↗</a></div>`;
+}
+
+function buildFarmLegend(fc) {
+  const seen = new Map();
+  fc.features.forEach((f) => {
+    if (!seen.has(f.properties.category_label)) seen.set(f.properties.category_label, f.properties.category_colour);
+  });
+  const el = document.getElementById("farm-legend");
+  el.innerHTML = "";
+  for (const [label, colour] of seen) {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `<span class="swatch" style="background:${colour}"></span> ${label}`;
+    el.appendChild(row);
+  }
+}
+
+async function toggleFarmFacilities(show) {
+  const legendEl = document.getElementById("farm-legend");
+  if (!show) {
+    if (farmFacilitiesLayer) map.removeLayer(farmFacilitiesLayer);
+    legendEl.hidden = true;
+    return;
+  }
+  if (!farmFacilitiesData) {
+    farmFacilitiesData = await fetchJSON(DATA + "vic_farm_facilities.geojson", { versioned: true });
+  }
+  if (!farmFacilitiesLayer) {
+    farmFacilitiesLayer = L.geoJSON(farmFacilitiesData, {
+      pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+        radius: 5,
+        color: "#fff",
+        weight: 1.5,
+        fillColor: f.properties.category_colour,
+        fillOpacity: 0.9,
+      }),
+      onEachFeature: (f, l) => l.bindPopup(farmPopupHTML(f.properties), { offset: POPUP_OFFSET }),
+    });
+  }
+  farmFacilitiesLayer.addTo(map);
+  buildFarmLegend(farmFacilitiesData);
+  legendEl.hidden = false;
+}
+
+document.getElementById("toggle-farms").addEventListener("change", (e) => toggleFarmFacilities(e.target.checked));
 
 // ---------- Init ----------
 (async function init() {

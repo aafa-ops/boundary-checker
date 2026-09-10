@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VIC electorate &amp; postcode map — Australian Alliance for Animals</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="branding/brand.css?v=5">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="branding/brand.css?v=9">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 <header id="site-header">
@@ -65,6 +65,13 @@
         <div id="party-legend"></div>
       </section>
 
+      <section class="panel">
+        <h2>Farm &amp; slaughterhouse facilities</h2>
+        <p class="hint">1,573 Victorian facilities (farms, slaughterhouses, saleyards, etc.), from <a href="https://www.farmtransparency.org/map" target="_blank" rel="noopener">Farm Transparency Project</a>'s public data export. Click a marker for details and a link to its full profile.</p>
+        <label class="checkbox-row"><input type="checkbox" id="toggle-farms"> Show facilities</label>
+        <div id="farm-legend" class="legend-box" hidden></div>
+      </section>
+
     </aside>
 
     <main id="map"></main>
@@ -94,6 +101,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
