@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VIC electorate &amp; postcode map — Australian Alliance for Animals</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="branding/brand.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="branding/brand.css?v=1">
+<link rel="stylesheet" href="style.css?v=1">
 </head>
 <body>
 <header id="site-header">
@@ -37,7 +37,8 @@
           <label><input type="radio" name="unit-layer" value="suburbs"> Suburbs</label>
           <label><input type="radio" name="unit-layer" value="lgas"> LGAs</label>
         </div>
-        <p class="hint">Labels for the chosen layer appear once you zoom in far enough to read them without clutter.</p>
+        <p class="hint">Labels for the chosen layer appear once you zoom in far enough to read them without clutter. Only what's on screen is drawn, so zooming and panning stay fast even statewide.</p>
+        <p class="hint" id="zoom-hint"></p>
 
         <div class="slider-row">
           <label for="slider-boundary">Boundary strength</label>
@@ -82,6 +83,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=1"></script>
 </body>
 </html>

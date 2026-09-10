@@ -1,13 +1,15 @@
 const DATA = "data/";
+const ASSET_VERSION = "1"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
 const state = {
   districtsFC: null,        // GeoJSON FeatureCollection of districts (also used for point-in-polygon)
-  unitLayerGroup: null,     // current Leaflet layer for postcodes/suburbs/lgas
+  unitLayerGroup: null,     // current Leaflet layer - only the units visible in the viewport, not all of them
   unitLayerKind: "none",    // which kind is currently shown
-  unitLayerIndex: {},       // id -> leaflet layer, for the currently shown unit layer (click-to-locate)
-  unitCache: {},            // cache of loaded+converted unit GeoJSON by type
+  unitLayerIndex: {},       // id -> leaflet layer, for the CURRENTLY RENDERED (visible) subset only
+  unitCache: {},            // full GeoJSON FeatureCollection by kind, fetched once
+  unitBoundsCache: {},      // kind -> Map(id -> L.LatLngBounds), precomputed once per kind for viewport filtering
   lookup: {},               // postcodes/suburbs/lgas lookup JSON, loaded on demand
   crosswalk: null,
   boundaryWeight: 2.5,
@@ -15,6 +17,7 @@ const state = {
 };
 
 const LABEL_ZOOM = { postcodes: 10, suburbs: 12, lgas: 8 };
+const MAX_RENDERED_UNITS = 600; // safety cap - a viewport at the render-zoom thresholds shouldn't hit this
 
 const map = L.map("map", { zoomControl: true, renderer: L.canvas() }).setView([-36.9, 144.4], 7);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -22,14 +25,15 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
 }).addTo(map);
 
-async function fetchJSON(url) {
-  const r = await fetch(url, { cache: "no-cache" });
-  if (!r.ok) throw new Error(`Failed to load ${url}`);
+async function fetchJSON(url, { versioned = false } = {}) {
+  const finalUrl = versioned ? `${url}${url.includes("?") ? "&" : "?"}v=${ASSET_VERSION}` : url;
+  const r = await fetch(finalUrl, { cache: "no-cache" });
+  if (!r.ok) throw new Error(`Failed to load ${finalUrl}`);
   return r.json();
 }
 
 async function fetchTopoAsGeoJSON(path) {
-  const topo = await fetchJSON(DATA + path);
+  const topo = await fetchJSON(DATA + path, { versioned: true });
   return topojson.feature(topo, topo.objects.data);
 }
 
@@ -65,6 +69,7 @@ async function loadDistricts() {
   const fc = await fetchTopoAsGeoJSON("vic_districts.topojson");
   state.districtsFC = fc;
   const layer = L.geoJSON(fc, {
+    smoothFactor: 2,
     style: (f) => ({
       color: "#444",
       weight: state.boundaryWeight,
@@ -105,26 +110,68 @@ function buildPartyLegend(fc) {
 }
 
 const UNIT_CONFIG = {
-  postcodes: { file: "vic_postcodes.topojson", idProp: "POA_CODE21", nameProp: "POA_NAME21", label: "Postcode" },
-  suburbs: { file: "vic_suburbs.topojson", idProp: "SAL_CODE21", nameProp: "SAL_NAME21", label: "Suburb" },
-  lgas: { file: "vic_lgas.topojson", idProp: "LGA_CODE25", nameProp: "LGA_NAME25", label: "LGA" },
+  postcodes: { file: "vic_postcodes.topojson", idProp: "POA_CODE21", nameProp: "POA_NAME21", label: "Postcode", minRenderZoom: 8 },
+  suburbs: { file: "vic_suburbs.topojson", idProp: "SAL_CODE21", nameProp: "SAL_NAME21", label: "Suburb", minRenderZoom: 9 },
+  lgas: { file: "vic_lgas.topojson", idProp: "LGA_CODE25", nameProp: "LGA_NAME25", label: "LGA", minRenderZoom: 6 },
 };
 
-async function setUnitLayer(kind) {
+function clearUnitLayer() {
   if (state.unitLayerGroup) {
     map.removeLayer(state.unitLayerGroup);
     state.unitLayerGroup = null;
   }
-  state.unitLayerKind = kind;
   state.unitLayerIndex = {};
-  if (kind === "none") return;
+}
 
+function setZoomHint(text) {
+  document.getElementById("zoom-hint").textContent = text;
+}
+
+async function setUnitLayer(kind) {
+  clearUnitLayer();
+  state.unitLayerKind = kind;
+  if (kind === "none") {
+    setZoomHint("");
+    return;
+  }
   const cfg = UNIT_CONFIG[kind];
   if (!state.unitCache[kind]) {
-    state.unitCache[kind] = await fetchTopoAsGeoJSON(cfg.file);
+    const fc = await fetchTopoAsGeoJSON(cfg.file);
+    state.unitCache[kind] = fc;
+    // Precompute each feature's bounds once - lets us viewport-filter on every
+    // pan/zoom without re-walking coordinates, and locate off-screen units
+    // (from the split list) without having rendered them yet.
+    state.unitBoundsCache[kind] = new Map(
+      fc.features.map((f) => [f.properties[cfg.idProp], L.geoJSON(f).getBounds()])
+    );
   }
+  refreshUnitLayer();
+}
+
+function refreshUnitLayer() {
+  const kind = state.unitLayerKind;
+  if (kind === "none") return;
+  const cfg = UNIT_CONFIG[kind];
+  clearUnitLayer();
+
+  // Below this zoom, showing all of them statewide is both illegible and the
+  // main cause of pan/zoom lag - so don't render at all until zoomed in enough
+  // for a viewport-sized subset to be worth drawing.
+  if (map.getZoom() < cfg.minRenderZoom) {
+    const total = state.unitCache[kind].features.length;
+    setZoomHint(`Zoom in to see ${cfg.label.toLowerCase()} outlines — ${total} statewide is too many to show meaningfully at this zoom.`);
+    return;
+  }
+  setZoomHint("");
+
   const fc = state.unitCache[kind];
-  const layer = L.geoJSON(fc, {
+  const boundsCache = state.unitBoundsCache[kind];
+  const viewBounds = map.getBounds().pad(0.25);
+  let visible = fc.features.filter((f) => viewBounds.intersects(boundsCache.get(f.properties[cfg.idProp])));
+  if (visible.length > MAX_RENDERED_UNITS) visible = visible.slice(0, MAX_RENDERED_UNITS);
+
+  const layer = L.geoJSON({ type: "FeatureCollection", features: visible }, {
+    smoothFactor: 2,
     style: (f) => ({
       color: f.properties.is_split ? SPLIT_COLOUR : FULL_COLOUR,
       weight: state.boundaryWeight + 0.5,
@@ -134,7 +181,6 @@ async function setUnitLayer(kind) {
       const name = f.properties[cfg.nameProp];
       l.bindPopup(unitPopupHTML(name, cfg.label, f.properties));
       l.bindTooltip(name, { permanent: true, direction: "center", className: "unit-label" });
-      l.closeTooltip();
       state.unitLayerIndex[f.properties[cfg.idProp]] = l;
     },
   });
@@ -152,7 +198,7 @@ function updateLabelVisibility() {
     else l.closeTooltip();
   });
 }
-map.on("zoomend", updateLabelVisibility);
+map.on("moveend", refreshUnitLayer);
 
 document.querySelectorAll('input[name="unit-layer"]').forEach((radio) => {
   radio.addEventListener("change", (e) => setUnitLayer(e.target.value));
@@ -169,7 +215,7 @@ const SPLITS_CONFIG = {
 
 async function getLookup(kind) {
   if (!state.lookup[kind]) {
-    state.lookup[kind] = await fetchJSON(DATA + SPLITS_CONFIG[kind].lookupFile);
+    state.lookup[kind] = await fetchJSON(DATA + SPLITS_CONFIG[kind].lookupFile, { versioned: true });
   }
   return state.lookup[kind];
 }
@@ -204,16 +250,22 @@ async function renderSplitTable(kind, filterText) {
 
 async function locateUnitOnMap(kind, unitId) {
   const radio = document.querySelector(`input[name="unit-layer"][value="${kind}"]`);
-  if (radio && !radio.checked) {
-    radio.checked = true;
-    await setUnitLayer(kind);
-  } else if (!state.unitLayerGroup || state.unitLayerKind !== kind) {
+  if (radio) radio.checked = true;
+  if (state.unitLayerKind !== kind || !state.unitCache[kind]) {
     await setUnitLayer(kind);
   }
+  const targetBounds = state.unitBoundsCache[kind].get(unitId);
+  if (!targetBounds) return;
+  // fitBounds's view change isn't always applied synchronously (e.g. when
+  // called shortly after other view setup) - wait for the real moveend
+  // rather than assume it, with a timeout fallback in case bounds were
+  // already satisfied and no moveend fires at all.
+  const moved = new Promise((resolve) => map.once("moveend", resolve));
+  map.fitBounds(targetBounds, { maxZoom: Math.max(UNIT_CONFIG[kind].minRenderZoom + 2, LABEL_ZOOM[kind] + 1) });
+  await Promise.race([moved, new Promise((resolve) => setTimeout(resolve, 500))]);
+  refreshUnitLayer();
   const target = state.unitLayerIndex[unitId];
-  if (!target) return;
-  map.fitBounds(target.getBounds(), { maxZoom: Math.max(map.getZoom(), LABEL_ZOOM[kind] + 1) });
-  target.openPopup();
+  if (target) target.openPopup();
 }
 
 let currentSplitKind = "postcodes";
@@ -257,7 +309,7 @@ async function handlePostcodeInput(value) {
   html += entry.districts.map(districtRowHTML).join("");
 
   if (entry.is_split) {
-    const crosswalk = state.crosswalk || (state.crosswalk = await fetchJSON(DATA + "crosswalk_postcode_suburbs.json"));
+    const crosswalk = state.crosswalk || (state.crosswalk = await fetchJSON(DATA + "crosswalk_postcode_suburbs.json", { versioned: true }));
     const suburbs = crosswalk[code] || [];
     if (suburbs.length > 1) {
       html += `<div class="hint">Postcode ${code} spans multiple suburbs — pick yours for a more precise answer:</div>`;

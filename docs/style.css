@@ -21,7 +21,7 @@ html, body { margin: 0; height: 100%; font-family: -apple-system, "Segoe UI", Ro
 #top-row {
   display: flex;
   flex: 1 1 55%;
-  min-height: 260px;
+  min-height: 0; /* let this flex item shrink below its sidebar's content height instead of overflowing #main-col */
 }
 #sidebar {
   width: 300px;
@@ -181,7 +181,15 @@ input[type="text"]:focus { outline: 2px solid var(--aafa-teal-light); border-col
 .unit-label::before { display: none; }
 
 @media (max-width: 800px) {
-  #top-row { flex-direction: column; }
-  #sidebar { width: auto; min-width: 0; max-height: 40vh; }
+  /* Stacked layout: let the page scroll instead of forcing everything into
+     one viewport-height row, which was squeezing the map down to ~70px
+     (leftover space after the sidebar's own height) and making pan/zoom feel
+     broken - it wasn't a data/rendering issue, just this layout. */
+  html, body { height: auto; }
+  #main-col { height: auto; }
+  #top-row { flex-direction: column; min-height: 0; }
+  #sidebar { width: auto; min-width: 0; max-height: 260px; }
+  #map { min-height: 400px; }
+  #splits-full { min-height: 300px; }
   #splits-full #split-search { width: 100%; margin-left: 0; }
 }
