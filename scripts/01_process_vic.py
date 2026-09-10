@@ -49,6 +49,26 @@ def _normalize_district_name(name: str) -> str:
     return name.replace("-", " ").strip().lower()
 
 
+def load_first_preference() -> dict:
+    """district_join -> list of {candidate, party, pct, rank} dicts, sorted by rank.
+
+    Full first-preference results for every candidate (not just the winner/
+    runner-up in VEC_2022_state_election_results_by_district.csv), so the UI
+    can show a top-N breakdown and call out minor parties (e.g. Animal
+    Justice Party) even where they didn't place in the top few.
+    """
+    fp = pd.read_csv(RAW / "vec/VEC_2022_first_preference_by_candidate.csv")
+    fp["district_join"] = fp["district"].map(_normalize_district_name)
+    result = {}
+    for key, group in fp.groupby("district_join"):
+        group_sorted = group.sort_values("rank")
+        result[key] = [
+            {"candidate": row.candidate, "party": row.party, "pct": row.pct, "rank": int(row.rank)}
+            for row in group_sorted.itertuples()
+        ]
+    return result
+
+
 def load_districts() -> gpd.GeoDataFrame:
     districts = gpd.read_file(RAW / "vec/VEC_STATE_ASSEMBLY_2022_districts.geojson")
     results = pd.read_csv(RAW / "vec/VEC_2022_state_election_results_by_district.csv")
@@ -63,6 +83,12 @@ def load_districts() -> gpd.GeoDataFrame:
     )
     districts["runner_up_party"] = districts["runner_up_party"].fillna("Independent")
     districts["party_colour"] = districts["party"].map(party_colour)
+
+    first_pref = load_first_preference()
+    districts["first_preference"] = districts["district_join"].map(first_pref)
+    missing_fp = districts[districts["first_preference"].isna()]["district_label"].tolist()
+    assert not missing_fp, f"no first-preference data for: {missing_fp}"
+
     districts = districts.rename(columns={"district": "district_name"})
     districts = districts.set_geometry("geometry")
     districts.geometry = districts.geometry.buffer(0)
@@ -280,7 +306,8 @@ def main():
     write_topojson(districts_web, [
         "district_name", "district_label", "region_label", "member", "party",
         "party_colour", "winner_pct", "runner_up", "runner_up_party",
-        "runner_up_pct", "margin_pct_points", "margin_basis", "geometry"
+        "runner_up_pct", "margin_pct_points", "margin_basis", "first_preference",
+        "geometry"
     ], "vic_districts.topojson")
 
     poa_web = simplify_and_attach(poa, "POA_CODE21", "POA_NAME21", poa_flags, 40)

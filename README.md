@@ -55,6 +55,14 @@ it from scratch you need, under `data/raw/`:
   runner_up_pct, margin_pct_points, margin_basis, source_url`. Built by hand
   from VEC's per-district results pages; there's no official machine-readable
   export of this.
+- `vec/VEC_2022_first_preference_by_candidate.csv` — every candidate (not
+  just the top two) in every district: `district, candidate, party, votes,
+  pct, rank`. Same VEC per-district results pages, first-preference-votes
+  table. Powers the district popup's top-5 breakdown and the "Animal Justice
+  Party ran here too" callout when they didn't place in the top 5.
+- `farm-transparency/facilities_australia.csv` — Farm Transparency Project's
+  own CSV export (farmtransparency.org/map → "Reports / Export Data" → "All
+  facilities in Australia (CSV)"). Feeds `scripts/02_process_farm_facilities.py`.
 
 Then, from the repo root:
 

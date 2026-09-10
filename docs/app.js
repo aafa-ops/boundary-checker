@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "9"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "10"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -47,16 +47,35 @@ async function fetchTopoAsGeoJSON(path) {
 }
 
 function districtPopupHTML(props) {
-  const margin = props.margin_pct_points != null ? `${props.margin_pct_points}%` : "n/a";
+  const margin = props.margin_pct_points != null ? `${props.margin_pct_points}pt` : "n/a";
   const labelEscaped = props.district_label.replace(/'/g, "\\'");
+  const fp = props.first_preference || [];
+  const top5 = fp.slice(0, 5);
+  const ajp = fp.find((c) => c.party === "Animal Justice Party");
+  const ajpInTop5 = !!ajp && top5.includes(ajp);
+
+  const candidateRows = top5.map((c) => `
+    <tr>
+      <td>${c.rank}</td>
+      <td>${c.candidate}</td>
+      <td style="color:#666;">${c.party}</td>
+      <td style="text-align:right;"><b>${c.pct}%</b></td>
+    </tr>`).join("");
+
+  const ajpRow = ajp && !ajpInTop5
+    ? `<div class="ajp-callout">Animal Justice Party — ${ajp.candidate}: <b>${ajp.pct}%</b> first-preference (ranked ${ajp.rank} of ${fp.length})</div>`
+    : "";
+
   return `
-    <h3>${props.district_label}</h3>
-    <div>${props.region_label || ""}</div>
-    <table>
-      <tr><td><b>Member</b></td><td>${props.member}</td></tr>
-      <tr><td><b>Party</b></td><td><span class="swatch" style="background:${props.party_colour}"></span> ${props.party}</td></tr>
-      <tr><td><b>Margin</b></td><td>${margin} (2022, over ${props.runner_up_party || "runner-up"})</td></tr>
-    </table>
+    <div class="district-popup-header">
+      <h3>${props.district_label}</h3>
+      <div class="district-margin">${margin}<span class="margin-label">margin</span></div>
+    </div>
+    <div class="hint" style="margin:0 0 6px;">${props.region_label || ""}</div>
+    <div><span class="swatch" style="background:${props.party_colour}"></span><b>${props.member}</b> — ${props.party}</div>
+    <div class="hint" style="margin:8px 0 2px;">First-preference votes (2022):</div>
+    <table class="fp-table">${candidateRows}</table>
+    ${ajpRow}
     <div class="popup-actions">
       <div class="hint" style="margin:0 0 4px;">List what's inside this district, with % of each:</div>
       <button onclick="showUnitsInDistrict('${props.district_name}', '${labelEscaped}', 'postcodes')">Postcodes</button>
