@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "12"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "13"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
