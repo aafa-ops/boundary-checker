@@ -80,13 +80,15 @@ def main():
     }
     for key, poly in layers.items():
         poly.geometry = poly.geometry.buffer(0)
-        joined = gpd.sjoin(gdf, poly[["_name", "geometry"]], how="left", predicate="within")
+        joined = gpd.sjoin(gdf, poly[["_id", "_name", "geometry"]], how="left", predicate="within")
+        gdf[f"{key}_code"] = joined["_id"].values
         gdf[f"{key}_name"] = joined["_name"].values
         gdf = gdf[~gdf.index.duplicated(keep="first")]
 
     districts = gpd.read_file("data/raw/vec/VEC_STATE_ASSEMBLY_2022_districts.geojson").to_crs(AREA_CRS)
     districts.geometry = districts.geometry.buffer(0)
-    joined = gpd.sjoin(gdf, districts[["district_label", "geometry"]], how="left", predicate="within")
+    joined = gpd.sjoin(gdf, districts[["district", "district_label", "geometry"]], how="left", predicate="within")
+    gdf["district_name"] = joined["district"].values
     gdf["district_label"] = joined["district_label"].values
     gdf = gdf[~gdf.index.duplicated(keep="first")]
 
@@ -98,7 +100,8 @@ def main():
     out_cols = [
         "Id", "Name", "Categories", "Species", "category_label", "category_colour",
         "Last Known Status", "Street", "Suburb", "State", "Postcode",
-        "postcode_name", "suburb_name", "lga_name", "district_label",
+        "postcode_code", "postcode_name", "suburb_code", "suburb_name",
+        "lga_code", "lga_name", "district_name", "district_label",
         "Owned By", "Contracted To", "Profile URL", "geometry",
     ]
     gdf = gdf[out_cols].rename(columns={

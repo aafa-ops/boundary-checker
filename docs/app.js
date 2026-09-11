@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "11"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "12"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -29,10 +29,14 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Leaflet's default popup position puts the click point (and whatever's
 // under it) roughly behind the popup's centre, obscuring the area you just
-// clicked on. Empirically measured (most of this app's popups render at a
-// similar ~345px width, Leaflet's own max-width) so the popup's bottom-left
-// corner lands on the click point instead - leaving the clicked area clear.
-const POPUP_OFFSET = L.point(-127, -47);
+// clicked on. The offset below was empirically measured to land the
+// popup's bottom-left corner on the click point instead - but that only
+// holds if every popup renders at the SAME width, since Leaflet centres
+// popups based on their actual rendered width (which varies with content
+// length by default). So minWidth/maxWidth are locked to the same value
+// here, forcing a constant width regardless of content, which is what
+// makes the fixed offset reliable rather than "mostly working".
+const POPUP_OPTIONS = { offset: L.point(-127, -47), minWidth: 300, maxWidth: 300 };
 
 async function fetchJSON(url, { versioned = false } = {}) {
   const finalUrl = versioned ? `${url}${url.includes("?") ? "&" : "?"}v=${ASSET_VERSION}` : url;
@@ -111,7 +115,7 @@ async function loadDistricts() {
       fillColor: f.properties.party_colour,
       fillOpacity: state.partyOpacity,
     }),
-    onEachFeature: (f, l) => l.bindPopup(districtPopupHTML(f.properties), { offset: POPUP_OFFSET }),
+    onEachFeature: (f, l) => l.bindPopup(districtPopupHTML(f.properties), POPUP_OPTIONS),
   });
   state.districtsLayer = layer;
   layer.addTo(map);
@@ -248,7 +252,7 @@ function refreshUnitLayer() {
       const id = f.properties[cfg.idProp];
       const name = f.properties[cfg.nameProp];
       const entry = lookup[id];
-      if (entry) l.bindPopup(unitPopupHTML(entry, cfg.label), { offset: POPUP_OFFSET });
+      if (entry) l.bindPopup(unitPopupHTML(entry, cfg.label), POPUP_OPTIONS);
       l.bindTooltip(name, { permanent: true, direction: "center", className: "unit-label" });
       state.unitLayerIndex[id] = l;
     },
@@ -330,7 +334,8 @@ async function renderSplitTable(kind, filterText) {
   const frag = document.createDocumentFragment();
   for (const r of rows.slice(0, 1000)) {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td><span class="name-link">${r.name}</span></td><td>${r.district_label}</td><td>${r.member}</td><td>${r.party}</td><td>${r.pct_area}%</td>`;
+    const districtCell = `<span class="district-link" onclick="event.stopPropagation(); locateDistrict('${r.district}')">${r.district_label}</span>`;
+    tr.innerHTML = `<td><span class="name-link">${r.name}</span></td><td>${districtCell}</td><td>${r.member}</td><td>${r.party}</td><td>${r.pct_area}%</td>`;
     tr.addEventListener("click", () => locateUnitOnMap(kind, r.unitId));
     frag.appendChild(tr);
   }
@@ -383,6 +388,15 @@ document.getElementById("split-search").addEventListener("input", (e) => {
   renderSplitTable(currentSplitKind, e.target.value);
 });
 
+// Generic "click this name to jump to it on the map" link, reused anywhere
+// a district/postcode/suburb/LGA name is displayed as text.
+function districtLinkHTML(districtName, label) {
+  return `<span class="district-link" onclick="locateDistrict('${districtName}')">${label}</span>`;
+}
+function unitLinkHTML(kind, id, label) {
+  return `<span class="district-link" onclick="locateUnitOnMap('${kind}', '${id}')">${label}</span>`;
+}
+
 // ---------- Lookup panel: postcode -> suburb -> address ----------
 function districtRowHTML(d) {
   const margin = d.margin_pct_points != null ? `${d.margin_pct_points}%` : "n/a";
@@ -390,7 +404,7 @@ function districtRowHTML(d) {
     ? ` — won ${d.winner_pct}% to ${d.runner_up_pct}% (${d.runner_up_party || "runner-up"})`
     : "";
   return `<div class="district-row">
-    <span><span class="swatch" style="background:${d.party_colour}"></span><span class="district-link" onclick="locateDistrict('${d.district}')">${d.district_label}</span></span>
+    <span><span class="swatch" style="background:${d.party_colour}"></span>${districtLinkHTML(d.district, d.district_label)}</span>
     <span>${d.pct_area}%</span>
   </div>
   <div style="font-size:12px;color:#555;margin:-4px 0 6px 16px;">${d.member} (${d.party}), margin ${margin}${tcp}</div>`;
@@ -521,14 +535,22 @@ function farmPopupHTML(p) {
   const statusBadge = p.status === "Open"
     ? `<span class="status-badge status-full">Open</span>`
     : `<span class="status-badge status-split">${p.status || "Status unknown"}</span>`;
-  const location = [p.street, p.suburb_name || p.suburb_raw, p.postcode_name].filter(Boolean).join(", ");
+  const suburbBit = p.suburb_code
+    ? unitLinkHTML("suburbs", p.suburb_code, p.suburb_name || p.suburb_raw)
+    : (p.suburb_name || p.suburb_raw || "");
+  const postcodeBit = p.postcode_code
+    ? unitLinkHTML("postcodes", p.postcode_code, p.postcode_name)
+    : (p.postcode_name || "");
+  const location = [p.street, suburbBit, postcodeBit].filter(Boolean).join(", ");
+  const districtBit = p.district_name ? districtLinkHTML(p.district_name, p.district_label) : "";
+  const lgaBit = p.lga_code ? unitLinkHTML("lgas", p.lga_code, p.lga_name) : (p.lga_name || "");
   return `<h3>${p.name}</h3>
     <div style="font-size:11px;color:#888;margin-bottom:4px;">${p.category_label}${p.species ? " — " + p.species : ""}</div>
     ${statusBadge}
     <div style="font-size:12px;margin-top:6px;line-height:1.5;">
       ${location}<br>
-      ${p.district_label ? `District: <b>${p.district_label}</b><br>` : ""}
-      ${p.lga_name ? `LGA: ${p.lga_name}<br>` : ""}
+      ${districtBit ? `District: <b>${districtBit}</b><br>` : ""}
+      ${lgaBit ? `LGA: ${lgaBit}<br>` : ""}
       ${p.owned_by ? `Owned by: ${p.owned_by}<br>` : ""}
     </div>
     <div class="popup-actions"><a href="${p.profile_url}" target="_blank" rel="noopener">Full profile on Farm Transparency Project ↗</a></div>`;
@@ -567,7 +589,7 @@ function renderFarmLayer() {
       fillColor: f.properties.category_colour,
       fillOpacity: 0.9,
     }),
-    onEachFeature: (f, l) => l.bindPopup(farmPopupHTML(f.properties), { offset: POPUP_OFFSET }),
+    onEachFeature: (f, l) => l.bindPopup(farmPopupHTML(f.properties), POPUP_OPTIONS),
   });
   farmFacilitiesLayer.addTo(map);
 }
