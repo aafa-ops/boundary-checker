@@ -1,5 +1,5 @@
 const DATA = "data/";
-const ASSET_VERSION = "10"; // bump on deploy if a CDN/proxy ever caches these too aggressively
+const ASSET_VERSION = "11"; // bump on deploy if a CDN/proxy ever caches these too aggressively
 const FULL_COLOUR = "#2f9e44";
 const SPLIT_COLOUR = "#e8590c";
 
@@ -330,7 +330,7 @@ async function renderSplitTable(kind, filterText) {
   const frag = document.createDocumentFragment();
   for (const r of rows.slice(0, 1000)) {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${r.name}</td><td>${r.district_label}</td><td>${r.member}</td><td>${r.party}</td><td>${r.pct_area}%</td>`;
+    tr.innerHTML = `<td><span class="name-link">${r.name}</span></td><td>${r.district_label}</td><td>${r.member}</td><td>${r.party}</td><td>${r.pct_area}%</td>`;
     tr.addEventListener("click", () => locateUnitOnMap(kind, r.unitId));
     frag.appendChild(tr);
   }
@@ -390,10 +390,20 @@ function districtRowHTML(d) {
     ? ` — won ${d.winner_pct}% to ${d.runner_up_pct}% (${d.runner_up_party || "runner-up"})`
     : "";
   return `<div class="district-row">
-    <span><span class="swatch" style="background:${d.party_colour}"></span>${d.district_label}</span>
+    <span><span class="swatch" style="background:${d.party_colour}"></span><span class="district-link" onclick="locateDistrict('${d.district}')">${d.district_label}</span></span>
     <span>${d.pct_area}%</span>
   </div>
   <div style="font-size:12px;color:#555;margin:-4px 0 6px 16px;">${d.member} (${d.party}), margin ${margin}${tcp}</div>`;
+}
+
+function locateDistrict(districtName) {
+  let target = null;
+  state.districtsLayer.eachLayer((l) => {
+    if (l.feature.properties.district_name === districtName) target = l;
+  });
+  if (!target) return;
+  map.fitBounds(target.getBounds(), { maxZoom: 11 });
+  target.openPopup();
 }
 
 async function handlePostcodeInput(value) {
@@ -524,53 +534,149 @@ function farmPopupHTML(p) {
     <div class="popup-actions"><a href="${p.profile_url}" target="_blank" rel="noopener">Full profile on Farm Transparency Project ↗</a></div>`;
 }
 
-function buildFarmLegend(fc) {
+let farmCategoryFilter = null; // Set of currently-enabled category labels
+
+function buildFarmCategoryCheckboxes(fc) {
   const seen = new Map();
   fc.features.forEach((f) => {
     if (!seen.has(f.properties.category_label)) seen.set(f.properties.category_label, f.properties.category_colour);
   });
-  const el = document.getElementById("farm-legend");
+  farmCategoryFilter = new Set(seen.keys());
+  const el = document.getElementById("farm-category-list");
   el.innerHTML = "";
   for (const [label, colour] of seen) {
-    const row = document.createElement("div");
-    row.className = "row";
-    row.innerHTML = `<span class="swatch" style="background:${colour}"></span> ${label}`;
+    const row = document.createElement("label");
+    row.innerHTML = `<input type="checkbox" checked><span class="swatch" style="background:${colour}"></span>${label}`;
+    row.querySelector("input").addEventListener("change", (e) => {
+      if (e.target.checked) farmCategoryFilter.add(label);
+      else farmCategoryFilter.delete(label);
+      renderFarmLayer();
+    });
     el.appendChild(row);
   }
 }
 
+function renderFarmLayer() {
+  if (farmFacilitiesLayer) map.removeLayer(farmFacilitiesLayer);
+  const visible = farmFacilitiesData.features.filter((f) => farmCategoryFilter.has(f.properties.category_label));
+  farmFacilitiesLayer = L.geoJSON({ type: "FeatureCollection", features: visible }, {
+    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+      radius: 5,
+      color: "#fff",
+      weight: 1.5,
+      fillColor: f.properties.category_colour,
+      fillOpacity: 0.9,
+    }),
+    onEachFeature: (f, l) => l.bindPopup(farmPopupHTML(f.properties), { offset: POPUP_OFFSET }),
+  });
+  farmFacilitiesLayer.addTo(map);
+}
+
 async function toggleFarmFacilities(show) {
-  const legendEl = document.getElementById("farm-legend");
+  const listEl = document.getElementById("farm-category-list");
   if (!show) {
     if (farmFacilitiesLayer) map.removeLayer(farmFacilitiesLayer);
-    legendEl.hidden = true;
+    listEl.hidden = true;
     return;
   }
   if (!farmFacilitiesData) {
     farmFacilitiesData = await fetchJSON(DATA + "vic_farm_facilities.geojson", { versioned: true });
+    buildFarmCategoryCheckboxes(farmFacilitiesData);
   }
-  if (!farmFacilitiesLayer) {
-    farmFacilitiesLayer = L.geoJSON(farmFacilitiesData, {
-      pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-        radius: 5,
-        color: "#fff",
-        weight: 1.5,
-        fillColor: f.properties.category_colour,
-        fillOpacity: 0.9,
-      }),
-      onEachFeature: (f, l) => l.bindPopup(farmPopupHTML(f.properties), { offset: POPUP_OFFSET }),
-    });
-  }
-  farmFacilitiesLayer.addTo(map);
-  buildFarmLegend(farmFacilitiesData);
-  legendEl.hidden = false;
+  renderFarmLayer();
+  listEl.hidden = false;
 }
 
 document.getElementById("toggle-farms").addEventListener("change", (e) => toggleFarmFacilities(e.target.checked));
+
+// ---------- Global search: district / suburb / postcode / MP ----------
+let searchIndex = [];
+
+async function buildSearchIndex() {
+  const [postcodes, suburbs] = await Promise.all([getLookup("postcodes"), getLookup("suburbs")]);
+  searchIndex = [];
+  state.districtsFC.features.forEach((f) => {
+    const p = f.properties;
+    searchIndex.push({
+      type: "District",
+      mainText: p.district_label,
+      subText: `${p.member} — ${p.party}`,
+      searchText: `${p.district_label} ${p.member}`.toLowerCase(),
+      districtName: p.district_name,
+    });
+  });
+  for (const code in postcodes) {
+    const entry = postcodes[code];
+    searchIndex.push({
+      type: "Postcode",
+      mainText: entry.name,
+      subText: entry.districts[0].district_label + (entry.is_split ? " (+more)" : ""),
+      searchText: entry.name.toLowerCase(),
+      kind: "postcodes",
+      id: code,
+    });
+  }
+  for (const code in suburbs) {
+    const entry = suburbs[code];
+    searchIndex.push({
+      type: "Suburb",
+      mainText: entry.name,
+      subText: entry.districts[0].district_label + (entry.is_split ? " (+more)" : ""),
+      searchText: entry.name.toLowerCase(),
+      kind: "suburbs",
+      id: code,
+    });
+  }
+}
+
+function renderSearchResults(query) {
+  const resultsEl = document.getElementById("global-search-results");
+  const q = query.trim().toLowerCase();
+  if (!q) {
+    resultsEl.hidden = true;
+    resultsEl.innerHTML = "";
+    return;
+  }
+  const matches = searchIndex.filter((item) => item.searchText.includes(q));
+  matches.sort((a, b) => {
+    const aStarts = a.searchText.startsWith(q) ? 0 : 1;
+    const bStarts = b.searchText.startsWith(q) ? 0 : 1;
+    return aStarts - bStarts || a.mainText.localeCompare(b.mainText);
+  });
+  const top = matches.slice(0, 12);
+  resultsEl.innerHTML = top.length
+    ? top.map((item, i) => `
+      <div class="result" data-idx="${i}">
+        <span class="type-tag">${item.type}</span>
+        <span><span class="main-text">${item.mainText}</span><br><span class="sub-text">${item.subText}</span></span>
+      </div>`).join("")
+    : `<div class="no-results">No matches.</div>`;
+  top.forEach((item, i) => {
+    resultsEl.querySelector(`[data-idx="${i}"]`).addEventListener("click", () => selectSearchResult(item));
+  });
+  resultsEl.hidden = false;
+}
+
+function selectSearchResult(item) {
+  document.getElementById("global-search-results").hidden = true;
+  document.getElementById("global-search-input").value = item.mainText;
+  if (item.type === "District") locateDistrict(item.districtName);
+  else locateUnitOnMap(item.kind, item.id);
+}
+
+document.getElementById("global-search-input").addEventListener("input", (e) => renderSearchResults(e.target.value));
+document.getElementById("global-search-input").addEventListener("focus", (e) => {
+  if (e.target.value) renderSearchResults(e.target.value);
+});
+document.addEventListener("click", (e) => {
+  if (!document.getElementById("global-search").contains(e.target)) {
+    document.getElementById("global-search-results").hidden = true;
+  }
+});
 
 // ---------- Init ----------
 (async function init() {
   await loadBoundary();
   await loadDistricts();
-  await renderSplitTable(currentSplitKind, "");
+  await Promise.all([buildSearchIndex(), renderSplitTable(currentSplitKind, "")]);
 })();

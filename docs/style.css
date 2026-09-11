@@ -13,6 +13,51 @@ html, body { margin: 0; height: 100%; font-family: -apple-system, "Segoe UI", Ro
 #header-text h1 { font-size: 17px; margin: 0; color: var(--aafa-teal-dark); }
 #header-text p { font-size: 12px; margin: 2px 0 0; color: #666; }
 
+#global-search { position: relative; margin-left: auto; width: 320px; }
+#global-search-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+#global-search-input:focus { outline: 2px solid var(--aafa-teal-light); border-color: var(--aafa-teal-mid); }
+#global-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  max-height: 360px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+#global-search-results .result {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid #f0f0f0;
+}
+#global-search-results .result:last-child { border-bottom: none; }
+#global-search-results .result:hover { background: #f2fbf4; }
+#global-search-results .result .type-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #888;
+  flex-shrink: 0;
+  width: 62px;
+}
+#global-search-results .result .main-text { font-weight: 600; }
+#global-search-results .result .sub-text { color: #888; font-size: 12px; }
+#global-search-results .no-results { padding: 10px 12px; color: #888; font-size: 13px; }
+
 #main-col {
   display: flex;
   flex-direction: column;
@@ -173,10 +218,20 @@ input[type="text"]:focus { outline: 2px solid var(--aafa-teal-light); border-col
 #split-table tbody tr { cursor: pointer; }
 #split-table tbody tr:hover { background: #f2fbf4; }
 #split-table-empty { padding: 14px; color: #888; font-size: 13px; }
+#split-table .name-link { color: var(--aafa-teal-dark); text-decoration: underline; font-weight: 600; }
+#split-table tbody tr:hover .name-link { color: var(--aafa-teal-mid); }
 
 #party-legend { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
 #party-legend .row { display: flex; align-items: center; gap: 6px; }
 #party-legend .swatch { width: 12px; height: 12px; border-radius: 2px; }
+
+#farm-category-list { display: flex; flex-direction: column; gap: 4px; font-size: 12px; background: #fafafa; border: 1px solid #eee; border-radius: 4px; padding: 8px 10px; margin-top: 6px; }
+#farm-category-list label { display: flex; align-items: center; gap: 6px; }
+#farm-category-list .swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* Clickable district name inside a popup/lookup breakdown row - jumps to it on the map */
+.district-link { color: var(--aafa-teal-dark); text-decoration: underline; cursor: pointer; font-weight: inherit; }
+.district-link:hover { color: var(--aafa-teal-mid); }
 
 .leaflet-popup-content { font-size: 13px; }
 .leaflet-popup-content h3 { margin: 0; font-size: 14px; color: var(--aafa-teal-dark); }
